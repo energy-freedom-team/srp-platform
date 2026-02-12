@@ -1,0 +1,15 @@
+[submodule "energyfreedom-website"]
+	path = energyfreedom-website
+	url = https://github.com/energy-freedom-team/energyfreedom-website
+[submodule "solar-savings-dashboard"]
+	path = solar-savings-dashboard
+	url = https://github.com/energy-freedom-team/energy-freedom-solar-dashboard
+[submodule "srp-canvass-admin"]
+	path = srp-canvass-admin
+	url = https://github.com/energy-freedom-team/srp-canvass-admin
+[submodule "srp_canvass_flutter"]
+	path = srp_canvass_flutter
+	url = https://github.com/energy-freedom-team/srp-canvass-flutter
+[submodule "clean_energy_team"]
+	path = clean_energy_team
+	url = https://github.com/energy-freedom-team/clean-energy-team
