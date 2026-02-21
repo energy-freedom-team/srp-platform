@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Map — Track TPUSA & Counter-Signs | Not Our Water</title>
+<meta name="description" content="Map every TPUSA sign across SRP territory and track where counter-signs are placed.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root {
+    --bg: #1a1612;
+    --bg-mid: #2a2420;
+    --bg-light: #3d352e;
+    --text: #f0e8d8;
+    --text-dim: #a89470;
+    --text-muted: #5a5248;
+    --fight: #b82e1a;
+    --fight-light: #d44a2e;
+    --counter: #2a8fc7;
+    --counter-light: #8cc5e3;
+    --planned: #de9b35;
+    --planned-light: #f0c060;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* ── Header ── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--bg-light);
+    z-index: 1000;
+    flex-shrink: 0;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .header-back {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text-dim);
+    padding: 6px 12px;
+    border: 1px solid var(--bg-light);
+    border-radius: 4px;
+    transition: border-color 0.2s;
+  }
+  .header-back:hover { border-color: var(--text-dim); }
+
+  .header h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+  }
+
+  .header-stats {
+    display: flex;
+    gap: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+  .stat-tpusa { color: var(--fight-light); }
+  .stat-counter { color: var(--counter-light); }
+  .stat-planned { color: var(--planned-light); }
+  .stat-tpusa strong, .stat-counter strong, .stat-planned strong {
+    font-size: 14px;
+  }
+
+  /* ── Map ── */
+  .map-wrap {
+    flex: 1;
+    position: relative;
+  }
+
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Override Leaflet tiles for dark mode feel */
+  .leaflet-tile-pane { filter: saturate(0.8) brightness(0.95); }
+  .leaflet-control-zoom a {
+    background: var(--bg-mid) !important;
+    color: var(--text) !important;
+    border-color: var(--bg-light) !important;
+  }
+  .leaflet-control-zoom a:hover {
+    background: var(--bg-light) !important;
+  }
+  .leaflet-control-attribution {
+    background: rgba(26, 22, 18, 0.8) !important;
+    color: var(--text-muted) !important;
+    font-size: 9px !important;
+  }
+  .leaflet-control-attribution a { color: var(--text-dim) !important; }
+
+  /* ── Toolbar ── */
+  .toolbar {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    gap: 2px;
+    background: var(--bg);
+    border: 1px solid var(--bg-light);
+    border-radius: 10px;
+    padding: 4px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .tool-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .tool-btn--tpusa {
+    background: transparent;
+    color: var(--text-dim);
+  }
+  .tool-btn--tpusa.active, .tool-btn--tpusa:hover {
+    background: var(--fight);
+    color: #fff;
+  }
+
+  .tool-btn--counter {
+    background: transparent;
+    color: var(--text-dim);
+  }
+  .tool-btn--counter.active, .tool-btn--counter:hover {
+    background: var(--counter);
+    color: #fff;
+  }
+
+  .tool-btn--planned {
+    background: transparent;
+    color: var(--text-dim);
+  }
+  .tool-btn--planned.active, .tool-btn--planned:hover {
+    background: var(--planned);
+    color: #fff;
+  }
+
+  .tool-btn--navigate {
+    background: transparent;
+    color: var(--text-dim);
+  }
+  .tool-btn--navigate.active {
+    background: var(--bg-light);
+    color: var(--text);
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot--tpusa { background: var(--fight); }
+  .dot--counter { background: var(--counter); }
+  .dot--planned { background: var(--planned); }
+
+  /* ── Legend / filter ── */
+  .legend {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 1000;
+    background: var(--bg);
+    border: 1px solid var(--bg-light);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.2s;
+  }
+  .legend-item.hidden { opacity: 0.3; }
+  .legend-item .dot { width: 8px; height: 8px; }
+
+  /* ── Popup form ── */
+  .popup-form {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    background: var(--bg);
+    border: 1px solid var(--bg-light);
+    border-radius: 12px;
+    padding: 24px;
+    width: 320px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  .popup-form.open { display: block; }
+
+  .popup-form h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+
+  .popup-form label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+
+  .popup-form input,
+  .popup-form textarea {
+    width: 100%;
+    background: var(--bg-mid);
+    border: 1px solid var(--bg-light);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .popup-form input:focus,
+  .popup-form textarea:focus {
+    border-color: var(--text-dim);
+  }
+  .popup-form textarea { resize: vertical; min-height: 60px; }
+
+  .popup-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .popup-actions button {
+    flex: 1;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .popup-actions button:hover { opacity: 0.85; }
+
+  .btn-save {
+    background: var(--fight);
+    color: #fff;
+  }
+  .btn-save.counter { background: var(--counter); }
+  .btn-save.planned { background: var(--planned); }
+
+  .btn-cancel {
+    background: var(--bg-light);
+    color: var(--text-dim);
+  }
+
+  /* Overlay */
+  .overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1500;
+  }
+  .overlay.open { display: block; }
+
+  /* ── Marker popups ── */
+  .leaflet-popup-content-wrapper {
+    background: var(--bg) !important;
+    border: 1px solid var(--bg-light) !important;
+    border-radius: 8px !important;
+    color: var(--text) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3) !important;
+  }
+  .leaflet-popup-tip { background: var(--bg) !important; }
+  .leaflet-popup-content {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 13px !important;
+    margin: 12px 16px !important;
+  }
+  .marker-popup-type {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .marker-popup-type.tpusa { color: var(--fight-light); }
+  .marker-popup-type.counter { color: var(--counter-light); }
+  .marker-popup-type.planned { color: var(--planned-light); }
+  .marker-popup-intersection {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  .marker-popup-notes {
+    color: var(--text-dim);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .marker-popup-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+
+  /* ── Verify row in popup ── */
+  .marker-popup-verify {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--bg-light);
+  }
+  .verify-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--bg-mid);
+    color: var(--text-dim);
+    border: 1px solid var(--bg-light);
+    border-radius: 14px;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .verify-btn:hover { border-color: var(--text-dim); color: var(--text); }
+  .verify-btn.done { background: rgba(42,143,199,0.15); border-color: var(--counter); color: var(--counter-light); pointer-events: none; }
+  .verify-photo-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    padding: 4px 6px;
+    white-space: nowrap;
+  }
+  .verify-photo-btn:hover { color: var(--text); text-decoration: underline; }
+  .marker-popup-photos {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .marker-popup-photos img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--bg-light);
+    cursor: pointer;
+  }
+
+  /* ── District labels ── */
+  .district-label {
+    background: rgba(26, 22, 18, 0.75) !important;
+    border: 1px solid var(--bg-light) !important;
+    color: var(--text-dim) !important;
+    font-family: 'Space Mono', monospace !important;
+    font-size: 9px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    padding: 2px 6px !important;
+    border-radius: 3px !important;
+    box-shadow: none !important;
+  }
+  .district-label::before { display: none !important; }
+
+  /* ── Crosshair cursor when placing ── */
+  .placing .leaflet-container { cursor: crosshair !important; }
+
+  /* ── Photo input ── */
+  .photo-input { margin-bottom: 12px; }
+  .photo-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--bg-mid);
+    color: var(--text-dim);
+    border: 1px dashed var(--bg-light);
+    border-radius: 6px;
+    padding: 12px;
+    width: 100%;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .photo-btn:hover { border-color: var(--text-dim); color: var(--text); }
+  .photo-btn.has-photo { display: none; }
+  .photo-preview {
+    position: relative;
+    display: none;
+    margin-top: 8px;
+  }
+  .photo-preview.active { display: block; }
+  .photo-preview img {
+    width: 100%;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--bg-light);
+  }
+  .photo-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .photo-remove:hover { background: var(--fight); }
+
+  /* ── Marker photo in popup ── */
+  .marker-popup-photo {
+    width: 100%;
+    max-height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-top: 8px;
+    cursor: pointer;
+  }
+
+  /* ── Intro banner ── */
+  .intro-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 20px;
+    background: var(--fight);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .intro-banner p { margin: 0; }
+  .intro-dismiss {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    line-height: 1;
+  }
+  .intro-dismiss:hover { color: #fff; }
+  .intro-banner.hidden { display: none; }
+
+  /* ── Mobile ── */
+  @media (max-width: 600px) {
+    .header { padding: 10px 12px; }
+    .header h1 { font-size: 14px; }
+    .header-stats { gap: 10px; font-size: 10px; }
+    .header-stats strong { font-size: 12px; }
+    .toolbar { bottom: 16px; padding: 3px; gap: 1px; }
+    .tool-btn { font-size: 11px; padding: 8px 12px; gap: 5px; }
+    .legend { top: 8px; right: 8px; padding: 8px 12px; }
+    .popup-form { width: calc(100% - 32px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <a href="/signs/" class="header-back">&larr; Back</a>
+    <h1>Report a TPUSA Sign</h1>
+  </div>
+  <div class="header-stats">
+    <span class="stat-tpusa"><strong id="count-tpusa">0</strong> TPUSA</span>
+    <span class="stat-counter"><strong id="count-counter">0</strong> Ours</span>
+    <span class="stat-planned"><strong id="count-planned">0</strong> Planned</span>
+  </div>
+</div>
+
+<div class="intro-banner" id="intro-banner">
+  <p>Tap the map anywhere in SRP territory where you see a TPUSA sign. We'll send a counter-sign crew.</p>
+  <button class="intro-dismiss" id="intro-dismiss">&times;</button>
+</div>
+
+<div class="map-wrap">
+  <div id="map"></div>
+
+  <div class="legend">
+    <div class="legend-item" data-type="tpusa">
+      <span class="dot dot--tpusa"></span> TPUSA signs
+    </div>
+    <div class="legend-item" data-type="counter">
+      <span class="dot dot--counter"></span> Our counter-signs
+    </div>
+    <div class="legend-item" data-type="planned">
+      <span class="dot dot--planned"></span> Planned locations
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="tool-btn tool-btn--navigate" id="btn-navigate">
+      Navigate
+    </button>
+    <button class="tool-btn tool-btn--tpusa" id="btn-tpusa">
+      <span class="dot dot--tpusa"></span> TPUSA
+    </button>
+    <button class="tool-btn tool-btn--counter" id="btn-counter">
+      <span class="dot dot--counter"></span> Counter
+    </button>
+    <button class="tool-btn tool-btn--planned" id="btn-planned">
+      <span class="dot dot--planned"></span> Planned
+    </button>
+  </div>
+
+  <input type="file" id="verify-photo-input" accept="image/*" capture="environment" style="display:none">
+  <div class="overlay" id="overlay"></div>
+  <div class="popup-form" id="popup-form">
+    <h3 id="form-title">Add Sign</h3>
+    <label for="f-intersection">Intersection / Location</label>
+    <input type="text" id="f-intersection" placeholder="e.g. McDowell & Dobson">
+    <label for="f-notes">Notes (optional)</label>
+    <textarea id="f-notes" placeholder="Corner placement, sign size, etc."></textarea>
+    <label>Photo (optional)</label>
+    <div class="photo-input">
+      <input type="file" id="f-photo" accept="image/*" capture="environment" style="display:none">
+      <button type="button" class="photo-btn" id="photo-btn">+ Add Photo</button>
+      <div class="photo-preview" id="photo-preview"></div>
+    </div>
+    <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;height:0;overflow:hidden" aria-hidden="true">
+      <label for="f-website">Website</label>
+      <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off">
+    </div>
+    <div class="popup-actions">
+      <button class="btn-cancel" id="btn-cancel">Cancel</button>
+      <button class="btn-save" id="btn-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ── Config ──
+  var SUPABASE_URL = 'https://api.energyfreedom.team';
+  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzA0MDY3MjAwLCJleHAiOjE4OTM0NTYwMDB9.ijz5qNCy2uf8u9K0Bg8piaaI0MeH6CKBJTmN22dFoZU';
+
+  function supaFetch(path, opts) {
+    opts = opts || {};
+    var headers = {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': opts.prefer || ''
+    };
+    return fetch(SUPABASE_URL + '/rest/v1/' + path, {
+      method: opts.method || 'GET',
+      headers: headers,
+      body: opts.body ? JSON.stringify(opts.body) : undefined
+    }).then(function(r) { return r.json(); });
+  }
+
+  // ── Map setup — centered on SRP territory ──
+  var map = L.map('map', {
+    zoomControl: true,
+    attributionControl: true
+  }).setView([33.45, -111.85], 11);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap',
+    maxZoom: 19
+  }).addTo(map);
+
+  // ── Marker icons ──
+  function makeIcon(color, size) {
+    size = size || 14;
+    return L.divIcon({
+      className: '',
+      html: '<div style="width:' + size + 'px;height:' + size + 'px;background:' + color + ';border:2px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.4);"></div>',
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2]
+    });
+  }
+
+  var icons = {
+    tpusa: makeIcon('#b82e1a', 14),
+    counter: makeIcon('#2a8fc7', 14),
+    planned: makeIcon('#de9b35', 12)
+  };
+
+  var typeLabels = {
+    tpusa: 'TPUSA Sign',
+    counter: 'Counter-Sign',
+    planned: 'Planned Location'
+  };
+
+  // ── State ──
+  var mode = 'navigate'; // navigate | tpusa | counter | planned
+  var markers = {};       // id -> L.marker
+  var layers = {
+    tpusa: L.layerGroup().addTo(map),
+    counter: L.layerGroup().addTo(map),
+    planned: L.layerGroup().addTo(map)
+  };
+  var pendingLatLng = null;
+
+  // ── Toolbar ──
+  var btns = {
+    navigate: document.getElementById('btn-navigate'),
+    tpusa: document.getElementById('btn-tpusa'),
+    counter: document.getElementById('btn-counter'),
+    planned: document.getElementById('btn-planned')
+  };
+
+  function setMode(m) {
+    mode = m;
+    Object.keys(btns).forEach(function(k) {
+      btns[k].classList.toggle('active', k === m);
+    });
+    document.body.classList.toggle('placing', m !== 'navigate');
+  }
+
+  Object.keys(btns).forEach(function(k) {
+    btns[k].addEventListener('click', function() { setMode(k); });
+  });
+
+  // ── Legend filter ──
+  var visibility = { tpusa: true, counter: true, planned: true };
+  document.querySelectorAll('.legend-item').forEach(function(el) {
+    el.addEventListener('click', function() {
+      var type = el.dataset.type;
+      visibility[type] = !visibility[type];
+      el.classList.toggle('hidden', !visibility[type]);
+      if (visibility[type]) {
+        map.addLayer(layers[type]);
+      } else {
+        map.removeLayer(layers[type]);
+      }
+    });
+  });
+
+  // ── Stats ──
+  function updateStats() {
+    var counts = { tpusa: 0, counter: 0, planned: 0 };
+    Object.keys(markers).forEach(function(id) {
+      var t = markers[id]._signType;
+      if (counts[t] !== undefined) counts[t]++;
+    });
+    document.getElementById('count-tpusa').textContent = counts.tpusa;
+    document.getElementById('count-counter').textContent = counts.counter;
+    document.getElementById('count-planned').textContent = counts.planned;
+  }
+
+  // ── Verification data store ──
+  var verifications = {}; // signId -> { count, photos[] }
+
+  // ── Add marker to map ──
+  function addMarkerToMap(sign) {
+    var m = L.marker([sign.lat, sign.lng], { icon: icons[sign.sign_type] });
+    m._signId = sign.id;
+    m._signType = sign.sign_type;
+    m._signData = sign;
+
+    m.on('click', function() {
+      // Load verifications on popup open
+      if (!verifications[sign.id]) {
+        loadVerifications(sign.id);
+      }
+    });
+
+    m.bindPopup(function() { return buildPopupHtml(sign); }, { maxWidth: 260 });
+    m.addTo(layers[sign.sign_type]);
+    markers[sign.id] = m;
+  }
+
+  function buildPopupHtml(sign) {
+    var date = new Date(sign.created_at).toLocaleDateString('en-US', {
+      month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+    });
+    var v = verifications[sign.id] || { count: 0, photos: [] };
+
+    var html = '<div class="marker-popup-type ' + sign.sign_type + '">' + typeLabels[sign.sign_type] + '</div>';
+    if (sign.intersection) {
+      html += '<div class="marker-popup-intersection">' + escHtml(sign.intersection) + '</div>';
+    }
+    if (sign.notes) {
+      html += '<div class="marker-popup-notes">' + escHtml(sign.notes) + '</div>';
+    }
+
+    // All photos (original + verification photos)
+    var allPhotos = [];
+    if (sign.photo_url) allPhotos.push(sign.photo_url);
+    v.photos.forEach(function(p) { if (p) allPhotos.push(p); });
+    if (allPhotos.length > 0) {
+      html += '<div class="marker-popup-photos">';
+      allPhotos.forEach(function(url) {
+        html += '<img src="' + escHtml(url) + '" alt="Sign photo" onclick="window.open(this.src,\'_blank\')">';
+      });
+      html += '</div>';
+    }
+
+    html += '<div class="marker-popup-date">' + date + '</div>';
+
+    // Verify row
+    html += '<div class="marker-popup-verify">';
+    html += '<button class="verify-btn" data-sign-id="' + sign.id + '">&#128077; ' + (v.count > 0 ? v.count + ' verified' : 'Still there?') + '</button>';
+    html += '<button class="verify-photo-btn" data-sign-id="' + sign.id + '">+ Photo</button>';
+    html += '</div>';
+
+    return html;
+  }
+
+  function loadVerifications(signId) {
+    supaFetch('sign_verifications?sign_location_id=eq.' + signId + '&order=created_at.asc')
+      .then(function(data) {
+        if (!Array.isArray(data)) return;
+        verifications[signId] = {
+          count: data.length,
+          photos: data.map(function(v) { return v.photo_url; }).filter(Boolean)
+        };
+        // Refresh popup if open
+        if (markers[signId] && markers[signId].isPopupOpen()) {
+          markers[signId].setPopupContent(buildPopupHtml(markers[signId]._signData));
+        }
+      });
+  }
+
+  function escHtml(str) {
+    var d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  // ── Map click ──
+  map.on('click', function(e) {
+    if (mode === 'navigate') return;
+    pendingLatLng = e.latlng;
+    openForm(mode);
+  });
+
+  // ── Form ──
+  var formEl = document.getElementById('popup-form');
+  var overlayEl = document.getElementById('overlay');
+  var titleEl = document.getElementById('form-title');
+  var saveBtn = document.getElementById('btn-save');
+  var cancelBtn = document.getElementById('btn-cancel');
+  var fIntersection = document.getElementById('f-intersection');
+  var fNotes = document.getElementById('f-notes');
+  var fPhoto = document.getElementById('f-photo');
+  var photoBtn = document.getElementById('photo-btn');
+  var photoPreview = document.getElementById('photo-preview');
+  var currentFormType = 'tpusa';
+  var pendingPhotoBlob = null;
+
+  // ── Photo handling ──
+  photoBtn.addEventListener('click', function() { fPhoto.click(); });
+
+  fPhoto.addEventListener('change', function() {
+    var file = fPhoto.files[0];
+    if (!file) return;
+    compressImage(file, 1200, 0.7, function(blob, dataUrl) {
+      pendingPhotoBlob = blob;
+      photoBtn.classList.add('has-photo');
+      photoPreview.classList.add('active');
+      var img = document.createElement('img');
+      img.src = dataUrl;
+      var rm = document.createElement('button');
+      rm.className = 'photo-remove';
+      rm.textContent = '\u00d7';
+      rm.type = 'button';
+      rm.addEventListener('click', clearPhoto);
+      while (photoPreview.firstChild) photoPreview.removeChild(photoPreview.firstChild);
+      photoPreview.appendChild(img);
+      photoPreview.appendChild(rm);
+    });
+  });
+
+  function clearPhoto() {
+    pendingPhotoBlob = null;
+    fPhoto.value = '';
+    photoBtn.classList.remove('has-photo');
+    photoPreview.classList.remove('active');
+    while (photoPreview.firstChild) photoPreview.removeChild(photoPreview.firstChild);
+  }
+
+  function compressImage(file, maxW, quality, cb) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      var img = new Image();
+      img.onload = function() {
+        var w = img.width, h = img.height;
+        if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+        var canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        canvas.toBlob(function(blob) {
+          cb(blob, canvas.toDataURL('image/jpeg', quality));
+        }, 'image/jpeg', quality);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function uploadPhoto(blob) {
+    var name = Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.jpg';
+    return fetch(SUPABASE_URL + '/storage/v1/object/sign-photos/' + name, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'image/jpeg'
+      },
+      body: blob
+    }).then(function(r) {
+      if (!r.ok) throw new Error('Upload failed');
+      return SUPABASE_URL + '/storage/v1/object/public/sign-photos/' + name;
+    });
+  }
+
+  function openForm(type) {
+    currentFormType = type;
+    titleEl.textContent = 'Add ' + typeLabels[type];
+    saveBtn.className = 'btn-save' + (type !== 'tpusa' ? ' ' + type : '');
+    fIntersection.value = '';
+    fNotes.value = '';
+    clearPhoto();
+    formEl.classList.add('open');
+    overlayEl.classList.add('open');
+    document.getElementById('f-website').value = '';
+    fIntersection.focus();
+  }
+
+  function closeForm() {
+    formEl.classList.remove('open');
+    overlayEl.classList.remove('open');
+    pendingLatLng = null;
+  }
+
+  cancelBtn.addEventListener('click', closeForm);
+  overlayEl.addEventListener('click', closeForm);
+
+  saveBtn.addEventListener('click', function() {
+    if (!pendingLatLng) return;
+    if (document.getElementById('f-website').value) { closeForm(); return; }
+
+    saveBtn.textContent = 'Saving...';
+    saveBtn.disabled = true;
+
+    var photoPromise = pendingPhotoBlob
+      ? uploadPhoto(pendingPhotoBlob)
+      : Promise.resolve(null);
+
+    photoPromise.then(function(photoUrl) {
+      var data = {
+        lat: pendingLatLng.lat,
+        lng: pendingLatLng.lng,
+        sign_type: currentFormType,
+        intersection: fIntersection.value.trim() || null,
+        notes: fNotes.value.trim() || null,
+        photo_url: photoUrl
+      };
+
+      return supaFetch('sign_locations', {
+        method: 'POST',
+        body: data,
+        prefer: 'return=representation'
+      });
+    }).then(function(result) {
+      if (Array.isArray(result) && result.length > 0) {
+        addMarkerToMap(result[0]);
+        updateStats();
+      }
+      closeForm();
+    }).catch(function() {
+      alert('Failed to save. Check your connection.');
+    }).finally(function() {
+      saveBtn.textContent = 'Save';
+      saveBtn.disabled = false;
+    });
+  });
+
+
+  // ── Keyboard shortcut ──
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'Escape') {
+      if (formEl.classList.contains('open')) {
+        closeForm();
+      } else {
+        setMode('navigate');
+      }
+    }
+    if (e.key === '1') setMode('tpusa');
+    if (e.key === '2') setMode('counter');
+    if (e.key === '3') setMode('planned');
+    if (e.key === '0' || e.key === 'n') setMode('navigate');
+  });
+
+  // ── Verify button (delegated) ──
+  var verifyPhotoInput = document.getElementById('verify-photo-input');
+  var pendingVerifySignId = null;
+
+  document.addEventListener('click', function(e) {
+    // Thumbs up verify
+    if (e.target.classList.contains('verify-btn')) {
+      var signId = e.target.dataset.signId;
+      e.target.classList.add('done');
+      e.target.textContent = '\u2705 Verified!';
+      supaFetch('sign_verifications', {
+        method: 'POST',
+        body: { sign_location_id: signId },
+        prefer: 'return=minimal'
+      }).then(function() {
+        var v = verifications[signId] || { count: 0, photos: [] };
+        v.count++;
+        verifications[signId] = v;
+      });
+      return;
+    }
+    // Add verification photo
+    if (e.target.classList.contains('verify-photo-btn')) {
+      pendingVerifySignId = e.target.dataset.signId;
+      verifyPhotoInput.click();
+      return;
+    }
+  });
+
+  verifyPhotoInput.addEventListener('change', function() {
+    var file = verifyPhotoInput.files[0];
+    if (!file || !pendingVerifySignId) return;
+    var signId = pendingVerifySignId;
+    pendingVerifySignId = null;
+
+    compressImage(file, 1200, 0.7, function(blob) {
+      uploadPhoto(blob).then(function(photoUrl) {
+        return supaFetch('sign_verifications', {
+          method: 'POST',
+          body: { sign_location_id: signId, photo_url: photoUrl },
+          prefer: 'return=minimal'
+        });
+      }).then(function() {
+        // Reload verifications to refresh popup
+        delete verifications[signId];
+        loadVerifications(signId);
+      });
+    });
+    verifyPhotoInput.value = '';
+  });
+
+  // ── Load existing signs ──
+  supaFetch('sign_locations?order=created_at.asc')
+    .then(function(data) {
+      if (!Array.isArray(data)) return;
+      data.forEach(addMarkerToMap);
+      updateStats();
+    });
+
+  // ── Load all SRP district overlays ──
+  var districtColors = {
+    1: '#e06040', 2: '#de9b35', 3: '#5aaa5a', 4: '#2a8fc7',
+    5: '#9b6bb0', 6: '#d44a2e', 7: '#3db89a', 8: '#c77a2a',
+    9: '#6a8fc7', 10: '#b85a7a'
+  };
+
+  fetch('/signs/map/srp-districts.geojson')
+    .then(function(r) { return r.json(); })
+    .then(function(geojson) {
+      L.geoJSON(geojson, {
+        style: function(feature) {
+          var d = feature.properties.division || 0;
+          var c = districtColors[d] || '#de9b35';
+          return {
+            color: c,
+            weight: 2,
+            opacity: 0.55,
+            fillColor: c,
+            fillOpacity: 0.05,
+            dashArray: '6, 4'
+          };
+        },
+        onEachFeature: function(feature, layer) {
+          var name = feature.properties.name || 'District ' + feature.properties.division;
+          layer.bindTooltip(name, {
+            permanent: true,
+            direction: 'center',
+            className: 'district-label'
+          });
+        }
+      }).addTo(map);
+    })
+    .catch(function() {});
+
+  // ── Intro banner dismiss ──
+  var banner = document.getElementById('intro-banner');
+  var dismissBtn = document.getElementById('intro-dismiss');
+  if (dismissBtn && banner) {
+    dismissBtn.addEventListener('click', function() {
+      banner.classList.add('hidden');
+    });
+  }
+
+  // ── Start in TPUSA reporting mode ──
+  setMode('tpusa');
+
+})();
+</script>
+</body>
+</html>

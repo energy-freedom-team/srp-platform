@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Check Your Registration — Not Our Water</title>
+<meta name="description" content="Are you eligible to vote in the SRP election? Check your voter registration status and voting power in seconds.">
+<link rel="canonical" href="https://www.notourwater.org/check">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1a1612">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Check Your SRP Registration — Not Our Water">
+<meta property="og:description" content="Are you eligible to vote in the SRP election? Check your voter registration and voting power in seconds.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.notourwater.org/check">
+<meta property="og:site_name" content="Not Our Water">
+<meta property="og:image" content="https://www.notourwater.org/og-image.png">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --earth: #e2d5be;
+    --earth-light: #f0e8d8;
+    --earth-pale: #f7f2ea;
+    --earth-dark: #c8b896;
+    --earth-deep: #a89470;
+    --cracked: #8a7656;
+    --bedrock: #1a1612;
+    --bedrock-mid: #2a2420;
+    --bedrock-light: #3d352e;
+    --water: #1a6b9a;
+    --water-bright: #2a8fc7;
+    --water-deep: #0e3f5e;
+    --water-surface: #8cc5e3;
+    --water-glow: rgba(42, 143, 199, 0.12);
+    --rust: #c4522a;
+    --rust-dark: #8b3318;
+    --rust-light: #e07040;
+    --ink: #12100e;
+    --ink-mid: #5a5248;
+    --ink-light: #8a8072;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--earth);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Grain texture */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .site-header {
+    background: var(--bedrock);
+    padding: 0 clamp(24px, 4vw, 64px);
+    border-bottom: 2px solid var(--water-deep);
+    position: relative;
+  }
+  .site-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 5%, var(--water) 25%, var(--water-bright) 50%, var(--water) 75%, transparent 95%);
+    opacity: 0.6;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .header-brand {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--earth-light);
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+  }
+  .header-brand:hover { color: #fff; }
+  .header-back {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--earth-deep);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .header-back:hover { color: var(--water-bright); }
+
+  .check-page { flex: 1; display: flex; flex-direction: column; }
+
+  .check-hero {
+    background: var(--bedrock);
+    padding: clamp(48px, 8vh, 80px) clamp(24px, 4vw, 64px) clamp(56px, 8vh, 88px);
+    position: relative;
+    overflow: hidden;
+  }
+  .check-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image:
+      linear-gradient(42deg, transparent 46%, var(--cracked) 46.5%, var(--cracked) 47%, transparent 47.5%),
+      linear-gradient(-18deg, transparent 48%, var(--cracked) 48.5%, var(--cracked) 49%, transparent 49.5%);
+    background-size: 400px 300px, 350px 250px;
+    pointer-events: none;
+  }
+  .check-hero-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+  .check-hero .marker {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--water-bright);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .check-hero .marker-line {
+    width: 32px;
+    height: 1px;
+    background: var(--water-bright);
+  }
+  .check-hero h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 0.95;
+    letter-spacing: -1px;
+    color: var(--earth-light);
+    margin-bottom: 16px;
+  }
+  .check-hero h1 .water-mark { color: var(--water-bright); }
+  .check-hero p {
+    font-size: clamp(15px, 1.5vw, 18px);
+    color: var(--earth-deep);
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .check-form-wrap {
+    flex: 1;
+    padding: clamp(40px, 6vh, 72px) clamp(24px, 4vw, 64px);
+    display: flex;
+    justify-content: center;
+  }
+  .check-form { width: 100%; max-width: 520px; }
+
+  .step-bar { display: flex; gap: 6px; margin-bottom: 36px; }
+  .step-bar-seg {
+    flex: 1;
+    height: 3px;
+    background: var(--earth-dark);
+    transition: background 0.4s ease;
+  }
+  .step-bar-seg.active { background: var(--water); }
+
+  .step-header { margin-bottom: 28px; }
+  .step-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+  .step-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(22px, 3vw, 28px);
+    color: var(--ink);
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+
+  .field { margin-bottom: 20px; }
+  .field-label {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--ink-mid);
+    margin-bottom: 8px;
+  }
+  .field-input {
+    width: 100%;
+    padding: 14px 16px;
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: var(--earth-pale);
+    border: 1px solid var(--earth-dark);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field-input::placeholder { color: var(--ink-light); }
+  .field-input:focus {
+    border-color: var(--water);
+    box-shadow: 0 0 0 3px var(--water-glow);
+  }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .addr-wrap { position: relative; }
+  .addr-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--earth-pale);
+    border: 1px solid var(--earth-dark);
+    border-top: none;
+    z-index: 50;
+    max-height: 240px;
+    overflow-y: auto;
+  }
+  .addr-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border-bottom: 1px solid var(--earth-dark);
+  }
+  .addr-item:last-child { border-bottom: none; }
+  .addr-item:hover { background: var(--earth-light); }
+  .addr-item-street {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .addr-item-city {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-light);
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+  .addr-spinner {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--earth-dark);
+    border-top-color: var(--water);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+  .consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background: var(--earth-pale);
+    border: 1px solid var(--earth-dark);
+    margin-bottom: 20px;
+    cursor: pointer;
+  }
+  .consent:hover { border-color: var(--ink-light); }
+  .consent-box {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--earth-dark);
+    background: #fff;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .consent-box.checked { background: var(--water); border-color: var(--water); }
+  .consent-box svg {
+    width: 12px; height: 12px;
+    fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+    opacity: 0; transition: opacity 0.15s;
+  }
+  .consent-box.checked svg { opacity: 1; }
+  .consent-text { font-size: 14px; color: var(--ink-mid); line-height: 1.55; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.2s;
+    width: 100%;
+    padding: 16px 24px;
+  }
+  .btn:hover:not(:disabled) { transform: translateY(-2px); }
+  .btn:active:not(:disabled) { transform: translateY(0); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn--water { background: var(--water); color: #fff; }
+  .btn--water:hover:not(:disabled) { box-shadow: 0 8px 32px rgba(26, 107, 154, 0.3); }
+  .btn--rust { background: var(--rust); color: #fff; }
+  .btn--rust:hover:not(:disabled) { box-shadow: 0 8px 32px rgba(196, 82, 42, 0.3); }
+  .btn--ghost { background: transparent; color: var(--ink-mid); border: 1px solid var(--earth-dark); }
+  .btn--ghost:hover:not(:disabled) { border-color: var(--ink-light); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .btn-row { display: flex; gap: 12px; }
+  .btn-row .btn { flex: 1; }
+  .btn-spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-right: 8px;
+  }
+
+  .alert-error {
+    padding: 14px 16px;
+    background: rgba(196, 82, 42, 0.08);
+    border: 1px solid rgba(196, 82, 42, 0.25);
+    color: var(--rust);
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .step { display: none; }
+  .step.active { display: block; }
+
+  .result-banner { display: flex; align-items: center; gap: 16px; padding: 20px; margin-bottom: 24px; }
+  .result-banner--found { background: var(--water-glow); border: 1px solid rgba(26, 107, 154, 0.2); }
+  .result-banner--not-found { background: rgba(196, 82, 42, 0.08); border: 1px solid rgba(196, 82, 42, 0.2); }
+  .result-icon { width: 44px; height: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .result-icon--found { background: var(--water); }
+  .result-icon--not-found { background: var(--rust-light); }
+  .result-icon svg { width: 24px; height: 24px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .result-title { font-family: 'Archivo Black', sans-serif; font-weight: 400; font-size: 16px; color: var(--ink); line-height: 1.2; }
+  .result-msg { font-size: 14px; color: var(--ink-mid); line-height: 1.4; margin-top: 2px; }
+
+  .voter-card { padding: 20px; background: var(--earth-pale); border: 1px solid var(--earth-dark); margin-bottom: 20px; }
+  .voter-name { font-family: 'Archivo Black', sans-serif; font-weight: 400; font-size: 20px; color: var(--ink); line-height: 1.2; }
+  .voter-address { font-size: 15px; color: var(--ink-mid); margin-top: 4px; }
+  .parcel-row { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--earth-dark); }
+  .parcel-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-light); margin-bottom: 8px; }
+  .parcel-copy { display: flex; gap: 8px; }
+  .parcel-value { flex: 1; padding: 10px 14px; font-family: 'Space Mono', monospace; font-size: 14px; color: var(--ink); background: #fff; border: 1px solid var(--earth-dark); letter-spacing: 0.5px; }
+  .parcel-btn { padding: 10px 16px; background: var(--water); color: #fff; border: none; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+  .parcel-btn:hover { background: var(--water-bright); }
+
+  .stat-grid { display: grid; gap: 1px; background: var(--earth-dark); margin-bottom: 20px; }
+  .stat-grid--2 { grid-template-columns: 1fr 1fr; }
+  .stat-grid--1 { grid-template-columns: 1fr; }
+  .stat-cell { padding: 16px; background: var(--earth-pale); }
+  .stat-label { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-light); margin-bottom: 6px; }
+  .stat-value { font-family: 'Space Mono', monospace; font-size: clamp(28px, 4vw, 36px); font-weight: 700; color: var(--water); line-height: 1; letter-spacing: -1px; }
+  .stat-unit { font-size: 10px; color: var(--ink-light); font-weight: 400; letter-spacing: 1px; margin-left: 4px; }
+
+  .badge { display: inline-block; font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 6px 12px; }
+  .badge--water { background: var(--water); color: #fff; }
+  .badge--earth { background: var(--earth-dark); color: var(--ink); }
+  .badge--rust { background: var(--rust-light); color: #fff; }
+  .badge--bedrock { background: var(--bedrock); color: #fff; }
+
+  .props-title { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-light); margin-bottom: 8px; }
+  .prop-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--earth-pale); border: 1px solid var(--earth-dark); margin-bottom: 4px; font-size: 14px; }
+  .prop-addr { color: var(--ink-mid); }
+  .prop-votes { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--ink); white-space: nowrap; }
+
+  .tips { padding: 20px; background: var(--earth-pale); border: 1px solid var(--earth-dark); margin-bottom: 24px; }
+  .tips-title { font-family: 'Archivo Black', sans-serif; font-weight: 400; font-size: 14px; color: var(--ink); margin-bottom: 12px; }
+  .tips ul { list-style: none; }
+  .tips li { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: var(--ink-mid); line-height: 1.55; margin-bottom: 8px; }
+  .tips li:last-child { margin-bottom: 0; }
+  .tips-dot { color: var(--water); font-weight: 700; flex-shrink: 0; }
+
+  .confirmed { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 16px; background: var(--water-glow); border: 1px solid rgba(26, 107, 154, 0.2); margin-bottom: 12px; }
+  .confirmed svg { width: 18px; height: 18px; fill: none; stroke: var(--water); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .confirmed span { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; color: var(--water); letter-spacing: 0.5px; }
+
+  .check-cta {
+    background: var(--bedrock);
+    padding: clamp(48px, 6vh, 80px) clamp(24px, 4vw, 64px);
+    position: relative;
+  }
+  .check-cta::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 10%, var(--water) 30%, var(--water-bright) 50%, var(--water) 70%, transparent 90%);
+    opacity: 0.6;
+  }
+  .check-cta-inner { max-width: 640px; margin: 0 auto; text-align: center; }
+  .check-cta h2 { font-family: 'Archivo Black', sans-serif; font-weight: 400; font-size: clamp(28px, 4vw, 44px); line-height: 0.95; letter-spacing: -1px; color: var(--earth-light); margin-bottom: 16px; }
+  .check-cta p { font-size: clamp(15px, 1.4vw, 18px); color: var(--earth-deep); line-height: 1.6; margin-bottom: 32px; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .check-cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .check-cta .btn { width: auto; padding: 16px 32px; }
+  .btn--primary-cta { background: var(--water); color: #fff; }
+  .btn--primary-cta:hover:not(:disabled) { box-shadow: 0 8px 32px rgba(26, 107, 154, 0.3); }
+  .btn--ghost-cta { background: transparent; color: var(--earth-dark); border: 1px solid var(--bedrock-light); }
+  .btn--ghost-cta:hover:not(:disabled) { border-color: var(--earth-dark); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+
+  .footer { background: var(--bedrock); padding: 32px clamp(24px, 4vw, 64px); border-top: 1px solid var(--bedrock-light); }
+  .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: start; gap: 24px; flex-wrap: wrap; }
+  .footer-brand { font-family: 'Archivo Black', sans-serif; font-weight: 400; font-size: 16px; color: var(--earth-deep); letter-spacing: 1px; }
+  .footer p { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--bedrock-light); line-height: 1.8; letter-spacing: 0.3px; }
+  .footer a { color: var(--water-bright); text-decoration: none; transition: color 0.2s; }
+  .footer a:hover { color: var(--water-surface); }
+
+  @media (max-width: 600px) {
+    .field-row { grid-template-columns: 1fr; gap: 0; }
+    .btn-row { flex-direction: column; }
+    .stat-grid--2 { grid-template-columns: 1fr; }
+    .footer-inner { flex-direction: column; }
+    .check-cta-actions { flex-direction: column; align-items: center; }
+    .check-cta .btn { width: 100%; max-width: 320px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Check Your SRP Registration — Not Our Water",
+  "description": "Check your SRP voter registration status and voting power.",
+  "url": "https://www.notourwater.org/check",
+  "isPartOf": { "@type": "WebSite", "name": "Not Our Water", "url": "https://www.notourwater.org/" }
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="header-brand">NOTOURWATER.ORG</a>
+    <a href="/" class="header-back">Back to site</a>
+  </div>
+</header>
+
+<main class="check-page">
+
+  <section class="check-hero">
+    <div class="check-hero-inner">
+      <div class="marker">
+        <span class="marker-line"></span>
+        SRP Voter Check
+        <span class="marker-line"></span>
+      </div>
+      <h1>Can you <span class="water-mark">vote</span>?</h1>
+      <p>
+        SRP elections decide who controls your water and power.
+        Check if you're registered and see your voting power in seconds.
+      </p>
+    </div>
+  </section>
+
+  <section class="check-form-wrap">
+    <div class="check-form" id="checkForm">
+
+      <div class="step-bar">
+        <div class="step-bar-seg active" id="seg0"></div>
+        <div class="step-bar-seg" id="seg1"></div>
+        <div class="step-bar-seg" id="seg2"></div>
+      </div>
+
+      <!-- Step 1: Personal Info -->
+      <div class="step active" id="step0">
+        <div class="step-header">
+          <div class="step-label">Step 1 of 3</div>
+          <div class="step-title">Your information</div>
+        </div>
+        <div class="field addr-wrap">
+          <label class="field-label" for="address">Street Address</label>
+          <input class="field-input" id="address" type="text" placeholder="Start typing your address..." autocomplete="off">
+          <div class="addr-spinner" id="addrSpinner" style="display:none"></div>
+          <div class="addr-dropdown" id="addrDropdown" style="display:none"></div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label" for="firstName">First Name</label>
+            <input class="field-input" id="firstName" type="text" placeholder="John">
+          </div>
+          <div class="field">
+            <label class="field-label" for="lastName">Last Name</label>
+            <input class="field-input" id="lastName" type="text" placeholder="Smith">
+          </div>
+        </div>
+        <button class="btn btn--water" id="btnContinue" disabled>Continue</button>
+      </div>
+
+      <!-- Step 2: Email -->
+      <div class="step" id="step1">
+        <div class="step-header">
+          <div class="step-label">Step 2 of 3</div>
+          <div class="step-title">Verify your identity</div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="email">Email Address</label>
+          <input class="field-input" id="email" type="email" placeholder="you@example.com">
+        </div>
+        <div id="turnstileContainer" style="margin-bottom:20px"></div>
+        <div class="consent" id="consentWrap">
+          <div class="consent-box" id="consentBox">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </div>
+          <span class="consent-text">I understand this lookup will be logged for security and audit purposes.</span>
+        </div>
+        <div id="errorBox" style="display:none" class="alert-error"></div>
+        <div class="btn-row">
+          <button class="btn btn--ghost" id="btnBack1">Back</button>
+          <button class="btn btn--water" id="btnCheck" disabled>Check My Status</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Results -->
+      <div class="step" id="step2">
+        <div class="step-header">
+          <div class="step-label">Results</div>
+          <div class="step-title" id="resultTitle">Checking...</div>
+        </div>
+        <div id="resultContent"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="check-cta">
+    <div class="check-cta-inner">
+      <h2>Your water.<br>Your grid.<br>Your vote.</h2>
+      <p>
+        Data centers consume enough water for 10,000 homes at rates cheaper than yours.
+        Vote for the Energy Freedom Team to put customers first.
+      </p>
+      <div class="check-cta-actions">
+        <a href="/" class="btn btn--primary-cta">Learn More</a>
+        <a href="https://srpnet.com/elections" target="_blank" rel="noopener" class="btn btn--ghost-cta">Register at SRP</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">NOTOURWATER.ORG</div>
+    <p>Paid for by the Energy Freedom Team<br>John Travise & Sara Travise<br>SRP District 6</p>
+    <p><a href="https://energyfreedom.team">Contact</a></p>
+  </div>
+</footer>
+
+<script>
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  posthog.init('phc_B6KxW3gqUjgK4OmAf1wjUUyijREMbQo597M6jRqByRb', {api_host: 'https://us.i.posthog.com', person_profiles: 'identified_only'});
+</script>
+<script>
+(function() {
+  'use strict';
+
+  // ── Config ──
+  var SUPABASE_URL = 'https://api.energyfreedom.team';
+  var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzA0MDY3MjAwLCJleHAiOjE4OTM0NTYwMDB9.ijz5qNCy2uf8u9K0Bg8piaaI0MeH6CKBJTmN22dFoZU';
+  var accessToken = null;
+
+  // Cloudflare Turnstile — set your site key to enable bot protection
+  // Get one at: https://dash.cloudflare.com → Turnstile → Add Site
+  var TURNSTILE_SITE_KEY = '0x4AAAAAACfrWTVtk-CQh0Ow';
+  var turnstileToken = null;
+  var turnstileWidgetId = null;
+
+  // ── Anonymous auth for edge function JWT ──
+  async function ensureSession() {
+    if (accessToken) return accessToken;
+    var res = await fetch(SUPABASE_URL + '/auth/v1/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_ANON_KEY },
+      body: JSON.stringify({})
+    });
+    if (!res.ok) throw new Error('Failed to initialize session');
+    var data = await res.json();
+    accessToken = data.access_token;
+    return accessToken;
+  }
+
+  // ── Edge function caller ──
+  async function invokeFunction(functionName, body) {
+    var token = await ensureSession();
+    var res = await fetch(SUPABASE_URL + '/functions/v1/' + functionName, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify(body)
+    });
+    if (!res.ok) throw new Error('Request failed (' + res.status + ')');
+    return res.json();
+  }
+
+  // ── HTML escaping (XSS protection) ──
+  function esc(str) {
+    if (!str) return '';
+    var d = document.createElement('div');
+    d.textContent = str;
+    return d.textContent;
+  }
+
+  // ── Safe DOM builder helpers ──
+  function el(tag, attrs, children) {
+    var node = document.createElement(tag);
+    if (attrs) Object.keys(attrs).forEach(function(k) {
+      if (k === 'className') node.className = attrs[k];
+      else if (k === 'textContent') node.textContent = attrs[k];
+      else if (k.startsWith('on')) node.addEventListener(k.slice(2).toLowerCase(), attrs[k]);
+      else node.setAttribute(k, attrs[k]);
+    });
+    if (children) children.forEach(function(c) {
+      if (typeof c === 'string') node.appendChild(document.createTextNode(c));
+      else if (c) node.appendChild(c);
+    });
+    return node;
+  }
+
+  function svgIcon(path) {
+    var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    s.setAttribute('viewBox', '0 0 24 24');
+    s.setAttribute('width', '24');
+    s.setAttribute('height', '24');
+    s.style.cssText = 'fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round';
+    var p = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    p.setAttribute('d', path);
+    s.appendChild(p);
+    return s;
+  }
+
+  function svgCheck() {
+    var s = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    s.setAttribute('viewBox', '0 0 24 24');
+    s.setAttribute('width', '24');
+    s.setAttribute('height', '24');
+    s.style.cssText = 'fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round';
+    var pl = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+    pl.setAttribute('points', '20 6 9 17 4 12');
+    s.appendChild(pl);
+    return s;
+  }
+
+  // ── DOM refs ──
+  var addressInput = document.getElementById('address');
+  var addrSpinner = document.getElementById('addrSpinner');
+  var addrDropdown = document.getElementById('addrDropdown');
+  var firstNameInput = document.getElementById('firstName');
+  var lastNameInput = document.getElementById('lastName');
+  var emailInput = document.getElementById('email');
+  var consentWrap = document.getElementById('consentWrap');
+  var consentBox = document.getElementById('consentBox');
+  var errorBox = document.getElementById('errorBox');
+  var btnContinue = document.getElementById('btnContinue');
+  var btnBack1 = document.getElementById('btnBack1');
+  var btnCheck = document.getElementById('btnCheck');
+  var resultTitle = document.getElementById('resultTitle');
+  var resultContent = document.getElementById('resultContent');
+  var steps = [document.getElementById('step0'), document.getElementById('step1'), document.getElementById('step2')];
+  var segs = [document.getElementById('seg0'), document.getElementById('seg1'), document.getElementById('seg2')];
+
+  // ── State ──
+  var currentStep = 0;
+  var streetAddress = '';
+  var consentChecked = false;
+  var debounceTimer = null;
+  var result = null;
+
+  function goToStep(n) {
+    currentStep = n;
+    steps.forEach(function(s, i) { s.classList.toggle('active', i === n); });
+    segs.forEach(function(s, i) { s.classList.toggle('active', i <= n); });
+  }
+
+  function validateStep1() {
+    var ok = streetAddress.length > 0 && firstNameInput.value.trim().length > 0 && lastNameInput.value.trim().length > 0;
+    btnContinue.disabled = !ok;
+  }
+
+  function validateStep2() {
+    var email = emailInput.value.trim();
+    var turnstileOk = !TURNSTILE_SITE_KEY || turnstileToken;
+    btnCheck.disabled = !(email.length > 0 && email.includes('@') && consentChecked && turnstileOk);
+  }
+
+  // ── Address autocomplete ──
+  addressInput.addEventListener('input', function() {
+    var val = this.value;
+    streetAddress = val.split(',')[0].trim();
+    validateStep1();
+    clearTimeout(debounceTimer);
+    if (val.length < 3) {
+      addrDropdown.style.display = 'none';
+      addrSpinner.style.display = 'none';
+      return;
+    }
+    addrSpinner.style.display = 'block';
+    debounceTimer = setTimeout(async function() {
+      try {
+        var data = await invokeFunction('search-addresses', { query: val, limit: 8 });
+        var results = data.results || [];
+        addrDropdown.replaceChildren();
+        if (results.length === 0) {
+          addrDropdown.style.display = 'none';
+          addrSpinner.style.display = 'none';
+          return;
+        }
+        results.forEach(function(r) {
+          var item = el('div', { className: 'addr-item', onClick: function() {
+            var display = r.city ? r.full_address + ', ' + r.city + ', AZ' : r.full_address;
+            addressInput.value = display;
+            streetAddress = r.full_address;
+            addrDropdown.style.display = 'none';
+            validateStep1();
+          }}, [
+            el('div', { className: 'addr-item-street', textContent: r.full_address }),
+            r.city ? el('div', { className: 'addr-item-city', textContent: r.city + ', AZ' }) : null
+          ]);
+          addrDropdown.appendChild(item);
+        });
+        addrDropdown.style.display = 'block';
+      } catch (e) {
+        console.error('Address search error:', e);
+      } finally {
+        addrSpinner.style.display = 'none';
+      }
+    }, 300);
+  });
+
+  document.addEventListener('mousedown', function(e) {
+    if (!addrDropdown.contains(e.target) && e.target !== addressInput) addrDropdown.style.display = 'none';
+  });
+
+  firstNameInput.addEventListener('input', validateStep1);
+  lastNameInput.addEventListener('input', validateStep1);
+  emailInput.addEventListener('input', validateStep2);
+
+  consentWrap.addEventListener('click', function() {
+    consentChecked = !consentChecked;
+    consentBox.classList.toggle('checked', consentChecked);
+    validateStep2();
+  });
+
+  // ── Turnstile rendering ──
+  function renderTurnstile() {
+    if (!TURNSTILE_SITE_KEY || turnstileWidgetId !== null) return;
+    if (typeof turnstile === 'undefined') {
+      // Script not loaded yet, retry shortly
+      setTimeout(renderTurnstile, 200);
+      return;
+    }
+    turnstileWidgetId = turnstile.render('#turnstileContainer', {
+      sitekey: TURNSTILE_SITE_KEY,
+      callback: function(token) { turnstileToken = token; validateStep2(); },
+      'expired-callback': function() { turnstileToken = null; validateStep2(); },
+      'error-callback': function() { turnstileToken = null; validateStep2(); }
+    });
+  }
+
+  btnContinue.addEventListener('click', function() { goToStep(1); renderTurnstile(); });
+  btnBack1.addEventListener('click', function() { errorBox.style.display = 'none'; goToStep(0); });
+
+  // ── Check registration ──
+  btnCheck.addEventListener('click', async function() {
+    btnCheck.disabled = true;
+    btnCheck.textContent = '';
+    btnCheck.appendChild(el('span', { className: 'btn-spinner' }));
+    btnCheck.appendChild(document.createTextNode(' Checking...'));
+    errorBox.style.display = 'none';
+    try {
+      var checkBody = {
+        first_name: firstNameInput.value.trim(),
+        last_name: lastNameInput.value.trim(),
+        street_address: streetAddress,
+        email: emailInput.value.trim()
+      };
+      if (turnstileToken) checkBody.turnstile_token = turnstileToken;
+      result = await invokeFunction('check-registration', checkBody);
+      goToStep(2);
+      renderResults();
+    } catch (err) {
+      errorBox.textContent = err.message || 'An error occurred. Please try again.';
+      errorBox.style.display = 'block';
+      btnCheck.disabled = false;
+      btnCheck.textContent = 'Check My Status';
+    }
+  });
+
+  // ── Render results (safe DOM methods only) ──
+  function renderResults() {
+    if (!result) return;
+    resultContent.replaceChildren();
+
+    if (result.found) {
+      resultTitle.textContent = result.eligible ? 'Eligible to Vote' : 'Record Found';
+      var ownerType = result.owner_code === 'T' ? 'Trustee' : 'Owner';
+      var totalVotes = (result.total_votes || 0).toFixed(2);
+      var props = result.properties || [];
+      var apn = props[0] ? props[0].apn : '';
+
+      // Success banner
+      var bannerIcon = el('div', { className: 'result-icon result-icon--found' });
+      bannerIcon.appendChild(svgCheck());
+      resultContent.appendChild(el('div', { className: 'result-banner result-banner--found' }, [
+        bannerIcon,
+        el('div', {}, [
+          el('div', { className: 'result-title', textContent: result.eligible ? "You're eligible to vote!" : "Record found" }),
+          el('div', { className: 'result-msg', textContent: result.message })
+        ])
+      ]));
+
+      // Voter card
+      var voterCard = el('div', { className: 'voter-card' }, [
+        el('div', { className: 'voter-name', textContent: firstNameInput.value.trim() + ' ' + lastNameInput.value.trim() }),
+        el('div', { className: 'voter-address', textContent: streetAddress })
+      ]);
+      if (apn) {
+        var copyBtn = el('button', { className: 'parcel-btn', textContent: 'COPY', onClick: function() {
+          navigator.clipboard.writeText(apn).then(function() {
+            copyBtn.textContent = 'COPIED!';
+            setTimeout(function() { copyBtn.textContent = 'COPY'; }, 2000);
+          });
+        }});
+        voterCard.appendChild(el('div', { className: 'parcel-row' }, [
+          el('div', { className: 'parcel-label', textContent: 'Parcel Number (for SRP registration)' }),
+          el('div', { className: 'parcel-copy' }, [
+            el('div', { className: 'parcel-value', textContent: apn }),
+            copyBtn
+          ])
+        ]));
+      }
+      resultContent.appendChild(voterCard);
+
+      // Total voting power
+      var voteStat = el('div', { className: 'stat-cell' }, [
+        el('div', { className: 'stat-label', textContent: 'Total Voting Power' }),
+        el('div', { className: 'stat-value' }, [
+          document.createTextNode(totalVotes),
+          el('span', { className: 'stat-unit', textContent: 'acres' })
+        ])
+      ]);
+      resultContent.appendChild(el('div', { className: 'stat-grid stat-grid--1' }, [voteStat]));
+
+      // Owner type + PEVL
+      var ownerCell = el('div', { className: 'stat-cell' }, [
+        el('div', { className: 'stat-label', textContent: 'Owner Type' }),
+        el('span', { className: 'badge badge--bedrock', textContent: ownerType })
+      ]);
+      var pevlCell = el('div', { className: 'stat-cell' }, [
+        el('div', { className: 'stat-label', textContent: 'Early Voting (PEVL)' }),
+        el('span', { className: 'badge ' + (result.is_pevl ? 'badge--water' : 'badge--earth'), textContent: result.is_pevl ? 'Enrolled' : 'Not Enrolled' })
+      ]);
+      resultContent.appendChild(el('div', { className: 'stat-grid stat-grid--2' }, [ownerCell, pevlCell]));
+
+      // SRP Registration
+      var regCell = el('div', { className: 'stat-cell' }, [
+        el('div', { className: 'stat-label', textContent: 'SRP Registration Status' }),
+        el('span', { className: 'badge ' + (result.is_registered ? 'badge--water' : 'badge--rust'), textContent: result.is_registered ? 'Registered' : 'Not Registered with SRP' })
+      ]);
+      resultContent.appendChild(el('div', { className: 'stat-grid stat-grid--1' }, [regCell]));
+
+      // Multiple properties
+      if (props.length > 1) {
+        var propsList = el('div', { style: 'margin-bottom:20px' }, [
+          el('div', { className: 'props-title', textContent: 'Properties (' + props.length + ')' })
+        ]);
+        props.forEach(function(p) {
+          var addr = [p.street_num, p.street_dir, p.street_name].filter(Boolean).join(' ');
+          propsList.appendChild(el('div', { className: 'prop-row' }, [
+            el('span', { className: 'prop-addr', textContent: addr }),
+            el('span', { className: 'prop-votes', textContent: p.votes.toFixed(2) + ' acres' })
+          ]));
+        });
+        resultContent.appendChild(propsList);
+      }
+
+      // "This is me" button
+      var confirmSection = el('div', { id: 'confirmSection' });
+      var thisIsMeBtn = el('button', { className: 'btn btn--water', style: 'margin-bottom:12px', textContent: 'This Is Me!', onClick: async function() {
+        var uniqueId = props[0] ? props[0].unique_id : null;
+        if (!uniqueId) return;
+        thisIsMeBtn.disabled = true;
+        thisIsMeBtn.textContent = '';
+        thisIsMeBtn.appendChild(el('span', { className: 'btn-spinner' }));
+        thisIsMeBtn.appendChild(document.createTextNode(' Confirming...'));
+        try {
+          var token = await ensureSession();
+          var rpcRes = await fetch(SUPABASE_URL + '/rest/v1/rpc/confirm_voter_self_report', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, 'apikey': SUPABASE_ANON_KEY },
+            body: JSON.stringify({ p_unique_id: uniqueId, p_email: emailInput.value.trim() })
+          });
+          if (!rpcRes.ok) throw new Error('Confirmation failed');
+          confirmSection.replaceChildren();
+          var checkSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          checkSvg.setAttribute('viewBox', '0 0 24 24');
+          var pl = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+          pl.setAttribute('points', '20 6 9 17 4 12');
+          checkSvg.appendChild(pl);
+          confirmSection.appendChild(el('div', { className: 'confirmed' }, [
+            checkSvg,
+            el('span', { textContent: 'Confirmed! Thank you for verifying.' })
+          ]));
+        } catch (e) {
+          thisIsMeBtn.disabled = false;
+          thisIsMeBtn.textContent = 'This Is Me!';
+        }
+      }});
+      confirmSection.appendChild(thisIsMeBtn);
+      resultContent.appendChild(confirmSection);
+
+      // Register at SRP (if not registered)
+      if (!result.is_registered) {
+        resultContent.appendChild(el('a', { href: 'https://srpnet.com/elections', target: '_blank', rel: 'noopener', className: 'btn btn--rust', style: 'margin-bottom:12px;display:flex;text-decoration:none', textContent: 'Register at SRP' }));
+      }
+
+      // Try again
+      resultContent.appendChild(el('button', { className: 'btn btn--ghost', textContent: 'Check Another Person', onClick: resetForm }));
+
+    } else {
+      // Not found
+      resultTitle.textContent = 'Not Found';
+
+      var warnIcon = el('div', { className: 'result-icon result-icon--not-found' });
+      warnIcon.appendChild(svgIcon('M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z'));
+      resultContent.appendChild(el('div', { className: 'result-banner result-banner--not-found' }, [
+        warnIcon,
+        el('div', {}, [
+          el('div', { className: 'result-title', textContent: 'No match found' }),
+          el('div', { className: 'result-msg', textContent: result.message || "We couldn't find your registration." })
+        ])
+      ]));
+
+      // Tips
+      var tipsList = el('ul');
+      ['Check that your name matches exactly as it appears on SRP records',
+       'Try a different address if you own multiple properties',
+       'Registration is tied to property ownership within SRP boundaries'].forEach(function(tip) {
+        tipsList.appendChild(el('li', {}, [
+          el('span', { className: 'tips-dot', textContent: '\u2022' }),
+          document.createTextNode(tip)
+        ]));
+      });
+      resultContent.appendChild(el('div', { className: 'tips' }, [
+        el('div', { className: 'tips-title', textContent: 'Troubleshooting' }),
+        tipsList
+      ]));
+
+      resultContent.appendChild(el('a', { href: 'https://srpnet.com/elections', target: '_blank', rel: 'noopener', className: 'btn btn--rust', style: 'margin-bottom:12px;display:flex;text-decoration:none', textContent: 'Register at SRP' }));
+      resultContent.appendChild(el('button', { className: 'btn btn--ghost', textContent: 'Try Again', onClick: resetForm }));
+    }
+  }
+
+  function resetForm() {
+    addressInput.value = '';
+    firstNameInput.value = '';
+    lastNameInput.value = '';
+    emailInput.value = '';
+    streetAddress = '';
+    consentChecked = false;
+    consentBox.classList.remove('checked');
+    result = null;
+    errorBox.style.display = 'none';
+    btnContinue.disabled = true;
+    btnCheck.disabled = true;
+    btnCheck.textContent = 'Check My Status';
+    resultContent.replaceChildren();
+    // Reset Turnstile widget
+    if (turnstileWidgetId !== null && typeof turnstile !== 'undefined') {
+      turnstile.reset(turnstileWidgetId);
+      turnstileToken = null;
+    }
+    goToStep(0);
+  }
+})();
+</script>
+</body>
+</html>

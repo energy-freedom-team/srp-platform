@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ken Clark for SRP Board — Not Our Water</title>
+<meta name="description" content="Ken Clark is running for SRP Board, District 6. Former Arizona State Representative and State Energy Office Director, fighting for energy freedom, voter awareness, and board accountability.">
+<link rel="canonical" href="https://www.notourwater.org/ken/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1a1612">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Ken Clark for SRP Board — Not Our Water">
+<meta property="og:description" content="Former Arizona State Representative fighting for energy freedom, voter awareness, and board accountability at SRP.">
+<meta property="og:type" content="profile">
+<meta property="og:url" content="https://www.notourwater.org/ken/">
+<meta property="og:site_name" content="Not Our Water">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.notourwater.org/ken.jpg">
+<meta property="og:image:width" content="400">
+<meta property="og:image:height" content="400">
+<meta property="og:image:alt" content="Ken Clark — Candidate for SRP Board, District 6">
+<meta property="profile:first_name" content="Ken">
+<meta property="profile:last_name" content="Clark">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ken Clark for SRP Board — Not Our Water">
+<meta name="twitter:description" content="Former Arizona State Representative fighting for energy freedom, voter awareness, and board accountability at SRP.">
+<meta name="twitter:image" content="https://www.notourwater.org/ken.jpg">
+<meta name="twitter:image:alt" content="Ken Clark — Candidate for SRP Board, District 6">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Ken Clark",
+  "jobTitle": "Candidate for SRP Board, District 6",
+  "description": "Former Arizona State Representative and State Energy Office Director. Founded Phoestivus, a holiday market now in its 16th year supporting local farmers and businesses. Bringing accountability to SRP's infrastructure decisions.",
+  "url": "https://www.notourwater.org/ken/",
+  "sameAs": [
+    "https://www.kenclarkforaz.org/"
+  ],
+  "memberOf": {
+    "@type": "Organization",
+    "name": "Energy Freedom Team",
+    "url": "https://energyfreedom.team"
+  },
+  "knowsAbout": [
+    "Energy policy",
+    "SRP governance",
+    "Water conservation",
+    "Arizona state government",
+    "Local economic development"
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --earth: #e2d5be;
+    --earth-light: #f0e8d8;
+    --earth-pale: #f7f2ea;
+    --earth-dark: #c8b896;
+    --earth-deep: #a89470;
+    --cracked: #8a7656;
+    --bedrock: #1a1612;
+    --bedrock-mid: #2a2420;
+    --bedrock-light: #3d352e;
+    --water: #1a6b9a;
+    --water-bright: #2a8fc7;
+    --water-deep: #0e3f5e;
+    --water-surface: #8cc5e3;
+    --water-glow: rgba(42, 143, 199, 0.12);
+    --rust: #c4522a;
+    --rust-dark: #8b3318;
+    --rust-light: #e07040;
+    --ink: #12100e;
+    --ink-mid: #5a5248;
+    --ink-light: #8a8072;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--earth);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Grain texture */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── Scroll reveal ── */
+  .rv {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .rv.vis { opacity: 1; transform: translateY(0); }
+  .rv-d1 { transition-delay: 0.08s; }
+  .rv-d2 { transition-delay: 0.16s; }
+  .rv-d3 { transition-delay: 0.24s; }
+  .rv-d4 { transition-delay: 0.32s; }
+
+  /* ══════════════════════════════════
+     HEADER
+  ══════════════════════════════════ */
+  .header {
+    background: var(--bedrock);
+    padding: 20px clamp(24px, 4vw, 64px);
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent 5%,
+      var(--water) 25%,
+      var(--water-bright) 50%,
+      var(--water) 75%,
+      transparent 95%
+    );
+    opacity: 0.6;
+  }
+
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header-brand {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: var(--earth-deep);
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color 0.2s;
+  }
+  .header-brand:hover {
+    color: var(--earth-light);
+  }
+
+  .header-back {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--earth-deep);
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header-back:hover {
+    color: var(--earth-light);
+  }
+  .header-back-arrow {
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: currentColor;
+    position: relative;
+  }
+  .header-back-arrow::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -4px;
+    width: 8px;
+    height: 1px;
+    background: currentColor;
+    transform: rotate(-40deg);
+    transform-origin: left center;
+  }
+  .header-back-arrow::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 8px;
+    height: 1px;
+    background: currentColor;
+    transform: rotate(40deg);
+    transform-origin: left center;
+  }
+
+  /* ══════════════════════════════════
+     HERO
+  ══════════════════════════════════ */
+  .hero {
+    background: var(--bedrock);
+    padding: clamp(64px, 10vh, 120px) clamp(24px, 4vw, 64px) clamp(80px, 12vh, 160px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: clamp(40px, 6vw, 80px);
+    align-items: start;
+  }
+
+  .hero-photo-wrap {
+    position: relative;
+    background: var(--bedrock-mid);
+    overflow: hidden;
+    aspect-ratio: 1;
+    max-width: 360px;
+  }
+
+  .hero-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(100%);
+    transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .hero-photo-wrap:hover .hero-photo {
+    filter: grayscale(0%);
+  }
+
+  /* Subtle border accent on the photo */
+  .hero-photo-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--water), var(--water-bright));
+  }
+
+  .hero-text {
+    padding-top: 8px;
+  }
+
+  .hero-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--water-bright);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: enter-up 0.7s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-name {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(48px, 8vw, 88px);
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: var(--earth-light);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: enter-up 0.8s 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-bio {
+    font-size: clamp(16px, 1.6vw, 20px);
+    line-height: 1.65;
+    color: var(--earth-deep);
+    max-width: 520px;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: enter-up 0.7s 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: enter-up 0.7s 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes enter-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ══════════════════════════════════
+     BUTTONS
+  ══════════════════════════════════ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 18px 36px;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn--rust {
+    background: var(--rust);
+    color: #fff;
+  }
+  .btn--rust:hover {
+    box-shadow: 0 8px 32px rgba(196, 82, 42, 0.35);
+  }
+
+  .btn--water {
+    background: var(--water);
+    color: #fff;
+  }
+  .btn--water:hover {
+    box-shadow: 0 8px 32px rgba(26, 107, 154, 0.3);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    border: 1px solid var(--earth-dark);
+    color: var(--earth-dark);
+    padding: 17px 35px;
+  }
+  .btn--ghost:hover {
+    border-color: var(--earth-light);
+    color: var(--earth-light);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  }
+
+  /* Ghost variant for light backgrounds */
+  .btn--ghost-dark {
+    background: transparent;
+    border: 1px solid var(--ink-mid);
+    color: var(--ink-mid);
+    padding: 17px 35px;
+  }
+  .btn--ghost-dark:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  /* ══════════════════════════════════
+     POSITIONS
+  ══════════════════════════════════ */
+  .positions {
+    background: var(--earth);
+    padding: clamp(80px, 10vh, 140px) clamp(24px, 4vw, 64px);
+    position: relative;
+  }
+
+  /* Cracked earth texture */
+  .positions::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image:
+      linear-gradient(35deg, transparent 47%, var(--cracked) 47.3%, var(--cracked) 47.6%, transparent 48%),
+      linear-gradient(-62deg, transparent 46%, var(--cracked) 46.2%, var(--cracked) 46.5%, transparent 47%),
+      linear-gradient(78deg, transparent 49%, var(--cracked) 49.2%, var(--cracked) 49.4%, transparent 50%);
+    background-size: 600px 400px, 500px 350px, 400px 500px;
+    pointer-events: none;
+  }
+
+  .positions-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .marker {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .marker-line {
+    width: 32px;
+    height: 1px;
+  }
+  .marker--dark { color: var(--ink-light); }
+  .marker--dark .marker-line { background: var(--ink-light); }
+
+  .positions h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: var(--ink);
+    margin-bottom: 64px;
+  }
+
+  .position-list {
+    list-style: none;
+  }
+
+  .position-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(20px, 3vw, 48px);
+    padding: clamp(28px, 3vw, 40px) 0;
+    border-top: 1px solid var(--earth-dark);
+    align-items: start;
+  }
+  .position-item:last-child {
+    border-bottom: 1px solid var(--earth-dark);
+  }
+
+  .position-num {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(40px, 5vw, 60px);
+    color: var(--earth-dark);
+    line-height: 0.85;
+    min-width: 56px;
+  }
+
+  .position-item h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(18px, 2vw, 24px);
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  .position-item p {
+    font-size: clamp(14px, 1.2vw, 16px);
+    color: var(--ink-mid);
+    line-height: 1.65;
+    max-width: 560px;
+  }
+
+  /* ══════════════════════════════════
+     WATER MOMENT — candidate quote
+  ══════════════════════════════════ */
+  .water-moment {
+    background: var(--water);
+    padding: clamp(72px, 10vh, 140px) clamp(24px, 4vw, 64px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle horizontal ripple lines */
+  .water-moment::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 28px,
+        rgba(255,255,255,0.04) 28px,
+        rgba(255,255,255,0.04) 29px
+      );
+    pointer-events: none;
+    animation: ripple-drift 12s linear infinite;
+  }
+  @keyframes ripple-drift {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(29px); }
+  }
+
+  .water-moment-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .water-moment blockquote {
+    font-family: 'Source Serif 4', serif;
+    font-size: clamp(22px, 3vw, 38px);
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.35;
+    font-style: italic;
+    margin-bottom: 28px;
+  }
+
+  .water-moment cite {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    font-style: normal;
+    letter-spacing: 1px;
+  }
+
+  /* ══════════════════════════════════
+     CTA
+  ══════════════════════════════════ */
+  .cta {
+    background: var(--bedrock);
+    padding: clamp(80px, 12vh, 160px) clamp(24px, 4vw, 64px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent 10%,
+      var(--water) 30%,
+      var(--water-bright) 50%,
+      var(--water) 70%,
+      transparent 90%
+    );
+    opacity: 0.6;
+  }
+
+  .cta-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(32px, 5vw, 56px);
+    line-height: 1;
+    letter-spacing: -1px;
+    color: var(--earth-light);
+    margin-bottom: 48px;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* ══════════════════════════════════
+     FOOTER
+  ══════════════════════════════════ */
+  .footer {
+    background: var(--bedrock);
+    padding: 40px clamp(24px, 4vw, 64px);
+    border-top: 1px solid var(--bedrock-light);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .footer-brand {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--earth-deep);
+    letter-spacing: 1px;
+  }
+
+  .footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--bedrock-light);
+    line-height: 1.8;
+    letter-spacing: 0.3px;
+  }
+
+  .footer a {
+    color: var(--water-bright);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer a:hover { color: var(--water-surface); }
+
+  /* ══════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════ */
+  @media (max-width: 900px) {
+    .hero-inner {
+      grid-template-columns: 280px 1fr;
+      gap: 32px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .hero-photo-wrap {
+      max-width: 100%;
+      aspect-ratio: 4 / 3;
+    }
+
+    .hero-name {
+      font-size: 48px;
+      letter-spacing: -1px;
+    }
+
+    .positions h2,
+    .cta h2 {
+      font-size: 36px;
+      letter-spacing: -1px;
+    }
+
+    .position-item {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .position-num {
+      font-size: 28px;
+    }
+
+    .footer-inner {
+      flex-direction: column;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .rv { opacity: 1; transform: none; }
+    .hero-label, .hero-name, .hero-bio, .hero-actions {
+      opacity: 1; transform: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="header">
+  <div class="header-inner">
+    <a href="/" class="header-brand">NOTOURWATER.ORG</a>
+    <a href="/" class="header-back">
+      <span class="header-back-arrow"></span>
+      Back to site
+    </a>
+  </div>
+</header>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-photo-wrap">
+      <img
+        src="../ken.jpg"
+        alt="Ken Clark, candidate for SRP Board District 6"
+        class="hero-photo"
+        width="400"
+        height="400"
+      >
+    </div>
+    <div class="hero-text">
+      <div class="hero-label">SRP Board &middot; District 6</div>
+      <h1 class="hero-name">KEN CLARK</h1>
+      <p class="hero-bio">
+        Former Arizona State Representative and State Energy Office Director.
+        Founded Phoestivus, a holiday market now in its 16th year supporting
+        local farmers and businesses. Bringing accountability to SRP's
+        infrastructure decisions.
+      </p>
+      <div class="hero-actions">
+        <a href="https://secure.actblue.com/donate/ken-clark-srp" target="_blank" rel="noopener" class="btn btn--rust">Donate</a>
+        <a href="https://www.kenclarkforaz.org/" target="_blank" rel="noopener" class="btn btn--ghost">Visit Website</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ POSITIONS ══ -->
+<section class="positions">
+  <div class="positions-inner">
+    <div class="marker marker--dark rv">
+      <span class="marker-line"></span> Positions
+    </div>
+    <h2 class="rv rv-d1">What I'm<br>Fighting For</h2>
+
+    <ol class="position-list">
+      <li class="position-item rv rv-d2">
+        <div class="position-num">01</div>
+        <div>
+          <h3>Energy Freedom</h3>
+          <p>SRP has the potential to save you money, conserve water, improve air quality, and support your right to generate clean energy from your own home.</p>
+        </div>
+      </li>
+      <li class="position-item rv rv-d3">
+        <div class="position-num">02</div>
+        <div>
+          <h3>Voter Awareness</h3>
+          <p>Many people don't know they can vote in SRP elections, even if they get power from APS. Ken is fighting to increase participation.</p>
+        </div>
+      </li>
+      <li class="position-item rv rv-d4">
+        <div class="position-num">03</div>
+        <div>
+          <h3>Board Accountability</h3>
+          <p>SRP Board decisions impact every customer's rates and water. Those decisions should be transparent and serve the public interest.</p>
+        </div>
+      </li>
+      <li class="position-item rv">
+        <div class="position-num">04</div>
+        <div>
+          <h3>Local Economy</h3>
+          <p>Supporting local businesses and farmers. Infrastructure investments should benefit Arizona communities, not just corporate shareholders.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ══ WATER MOMENT — candidate quote ══ -->
+<section class="water-moment">
+  <div class="water-moment-inner rv">
+    <blockquote>
+      "SRP has the potential to save you money, conserve water, and
+      improve air quality. It's time for leadership that puts
+      customers first."
+    </blockquote>
+    <cite>— Ken Clark, Candidate for SRP Board</cite>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta">
+  <div class="cta-inner rv">
+    <h2>Ready to make<br>a difference?</h2>
+    <div class="cta-actions">
+      <a href="https://secure.actblue.com/donate/ken-clark-srp" target="_blank" rel="noopener" class="btn btn--rust">Donate Now</a>
+      <a href="/check" class="btn btn--water">Check Your Registration</a>
+      <a href="/" class="btn btn--ghost">Learn About the Issues</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">NOTOURWATER.ORG</div>
+    <p>
+      Paid for by the Energy Freedom Team<br>
+      John Travise & Sara Travise<br>
+      SRP District 6
+    </p>
+    <p>
+      <a href="https://energyfreedom.team">Contact</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  posthog.init('phc_B6KxW3gqUjgK4OmAf1wjUUyijREMbQo597M6jRqByRb', {api_host: 'https://us.i.posthog.com', person_profiles: 'identified_only'});
+</script>
+<script>
+  // Scroll reveal
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('vis');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('.rv').forEach(el => revealObs.observe(el));
+</script>
+</body>
+</html>

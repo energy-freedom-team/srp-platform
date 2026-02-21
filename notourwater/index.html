@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Not Our Water — Stop Subsidizing Data Centers in the Desert</title>
+<meta name="description" content="Phoenix data centers consume enough water for 10,000 homes at rates cheaper than yours. Demand fair rates, full disclosure, and no more blank checks.">
+<link rel="canonical" href="https://www.notourwater.org/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1a1612">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Not Our Water — Stop Subsidizing Data Centers in the Desert">
+<meta property="og:description" content="58+ data centers. 10,000 homes worth of water. Rates 44% cheaper than yours. It's time to demand fair water.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.notourwater.org/">
+<meta property="og:site_name" content="Not Our Water">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.notourwater.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Not Our Water — 58+ data centers consume water for 10,000 Phoenix homes at cheaper rates than yours">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Not Our Water — Stop Subsidizing Data Centers in the Desert">
+<meta name="twitter:description" content="58+ data centers. 10,000 homes worth of water. Rates 44% cheaper than yours. It's time to demand fair water.">
+<meta name="twitter:image" content="https://www.notourwater.org/og-image.png">
+<meta name="twitter:image:alt" content="Not Our Water — 58+ data centers consume water for 10,000 Phoenix homes">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Desert-dominant palette — blue is precious, like water */
+    --earth: #e2d5be;
+    --earth-light: #f0e8d8;
+    --earth-pale: #f7f2ea;
+    --earth-dark: #c8b896;
+    --earth-deep: #a89470;
+    --cracked: #8a7656;
+    --bedrock: #1a1612;
+    --bedrock-mid: #2a2420;
+    --bedrock-light: #3d352e;
+    /* Water — used sparingly. When you see blue, it MEANS water. */
+    --water: #1a6b9a;
+    --water-bright: #2a8fc7;
+    --water-deep: #0e3f5e;
+    --water-surface: #8cc5e3;
+    --water-glow: rgba(42, 143, 199, 0.12);
+    /* Warning */
+    --rust: #c4522a;
+    --rust-dark: #8b3318;
+    --rust-light: #e07040;
+    /* Type */
+    --ink: #12100e;
+    --ink-mid: #5a5248;
+    --ink-light: #8a8072;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--earth);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── Grain texture ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ══════════════════════════════════
+     WATER GAUGE — the signature element
+     A vertical gauge on the left edge that
+     depletes as you scroll, like a reservoir draining
+  ══════════════════════════════════ */
+  .gauge {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 48px;
+    background: var(--bedrock);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--bedrock-light);
+  }
+
+  .gauge-track {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gauge-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(0deg, var(--water-deep) 0%, var(--water) 40%, var(--water-bright) 100%);
+    transition: height 0.3s ease-out;
+    will-change: height;
+  }
+
+  /* Bubbles inside the water fill */
+  .gauge-bubbles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .gauge-bubble {
+    position: absolute;
+    bottom: -8px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), rgba(255,255,255,0.08));
+    border: 1px solid rgba(255,255,255,0.15);
+    animation: bubble-rise linear infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes bubble-rise {
+    0%   { transform: translateY(0) scale(1); opacity: 0; }
+    10%  { opacity: 0.7; }
+    50%  { transform: translateY(-40vh) scale(1.1); opacity: 0.5; }
+    80%  { opacity: 0.2; }
+    100% { transform: translateY(-85vh) scale(0.6); opacity: 0; }
+  }
+
+  /* Tick marks on the gauge */
+  .gauge-ticks {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .gauge-tick {
+    position: absolute;
+    right: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.15);
+  }
+  .gauge-tick--major {
+    width: 20px;
+    background: rgba(255,255,255,0.3);
+  }
+  .gauge-tick--minor {
+    width: 10px;
+  }
+
+  .gauge-label {
+    position: absolute;
+    right: 24px;
+    font-family: 'Space Mono', monospace;
+    font-size: 8px;
+    color: rgba(255,255,255,0.4);
+    transform: translateY(-50%);
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+
+  .gauge-status {
+    padding: 8px 4px;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--water-bright);
+    border-top: 1px solid var(--bedrock-light);
+    line-height: 1.4;
+    writing-mode: vertical-lr;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ══════════════════════════════════
+     DROUGHT SEVERITY — escalates as you scroll
+  ══════════════════════════════════ */
+  .severity {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 100;
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    background: var(--bedrock);
+    border: 1px solid var(--bedrock-light);
+    color: var(--earth-dark);
+    transition: all 0.5s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  .severity.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .severity[data-level="watch"] { color: #d4a847; border-color: #d4a847; }
+  .severity[data-level="warning"] { color: var(--rust-light); border-color: var(--rust-light); }
+  .severity[data-level="emergency"] { color: var(--rust); border-color: var(--rust); }
+  .severity[data-level="critical"] { color: #ff4136; border-color: #ff4136; }
+
+  .severity-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    margin-right: 8px;
+    animation: pulse-dot 2s ease infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ══════════════════════════════════
+     PAGE WRAPPER — offset for gauge
+  ══════════════════════════════════ */
+  .page {
+    margin-left: 48px;
+  }
+
+  /* ══════════════════════════════════
+     SCROLL REVEAL
+  ══════════════════════════════════ */
+  .rv {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .rv.vis { opacity: 1; transform: translateY(0); }
+  .rv-d1 { transition-delay: 0.08s; }
+  .rv-d2 { transition-delay: 0.16s; }
+  .rv-d3 { transition-delay: 0.24s; }
+  .rv-d4 { transition-delay: 0.32s; }
+  .rv-d5 { transition-delay: 0.40s; }
+  .rv-d6 { transition-delay: 0.48s; }
+
+  /* ══════════════════════════════════
+     SECTION MARKER — infrastructure label
+  ══════════════════════════════════ */
+  .marker {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .marker-line {
+    width: 32px;
+    height: 1px;
+  }
+  .marker--dark { color: var(--ink-light); }
+  .marker--dark .marker-line { background: var(--ink-light); }
+  .marker--light { color: var(--earth-dark); }
+  .marker--light .marker-line { background: var(--earth-dark); }
+  .marker--blue { color: var(--water-bright); }
+  .marker--blue .marker-line { background: var(--water-bright); }
+
+  /* ══════════════════════════════════
+     HERO
+     Desert ground with a crack. The water
+     has already drained. Only the memory remains.
+  ══════════════════════════════════ */
+  .hero {
+    min-height: 100vh;
+    min-height: 100svh;
+    background: var(--earth);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 clamp(32px, 6vw, 100px) clamp(64px, 10vh, 140px);
+    overflow: hidden;
+  }
+
+  /* Cracked earth texture */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background-image:
+      linear-gradient(42deg, transparent 46%, var(--cracked) 46.5%, var(--cracked) 47%, transparent 47.5%),
+      linear-gradient(-18deg, transparent 48%, var(--cracked) 48.5%, var(--cracked) 49%, transparent 49.5%),
+      linear-gradient(73deg, transparent 45%, var(--cracked) 45.3%, var(--cracked) 45.6%, transparent 46%),
+      linear-gradient(-55deg, transparent 47%, var(--cracked) 47.2%, var(--cracked) 47.5%, transparent 48%);
+    background-size: 400px 300px, 350px 250px, 500px 400px, 300px 350px;
+    pointer-events: none;
+  }
+
+  /* A single blue "puddle" remnant — the water that's left */
+  .hero-puddle {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg,
+      transparent 5%,
+      var(--water) 20%,
+      var(--water-bright) 50%,
+      var(--water) 80%,
+      transparent 95%
+    );
+    opacity: 0.5;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+  }
+
+  .hero-depth {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--cracked);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: enter-up 0.7s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(64px, 12vw, 160px);
+    line-height: 0.88;
+    color: var(--ink);
+    letter-spacing: -3px;
+    margin-bottom: 48px;
+  }
+
+  .hero-line {
+    display: block;
+    opacity: 0;
+    animation: enter-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-line:nth-child(1) { animation-delay: 0.3s; }
+  .hero-line:nth-child(2) { animation-delay: 0.5s; }
+
+  /* "WATER" gets a blue underline — like the last trickle */
+  .hero .water-mark {
+    position: relative;
+    color: var(--water);
+  }
+  .hero .water-mark::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: -2px;
+    right: -2px;
+    height: 6px;
+    background: var(--water);
+    opacity: 0.2;
+  }
+
+  .hero-sub {
+    font-size: clamp(17px, 1.8vw, 22px);
+    line-height: 1.65;
+    color: var(--ink-mid);
+    max-width: 580px;
+    margin-bottom: clamp(32px, 6vw, 72px);
+    opacity: 0;
+    animation: enter-up 0.7s 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-sub strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* Hero readout — monospace numbers feel like gauge data */
+  .hero-readout {
+    display: flex;
+    gap: clamp(40px, 6vw, 100px);
+    opacity: 0;
+    animation: enter-up 0.7s 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .readout {
+    position: relative;
+  }
+  .readout::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: var(--earth-dark);
+  }
+
+  .readout-value {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+    padding-left: 16px;
+  }
+  .readout-value .unit {
+    font-size: 0.5em;
+    color: var(--cracked);
+    font-weight: 400;
+  }
+
+  .readout-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-light);
+    letter-spacing: 1px;
+    margin-top: 10px;
+    padding-left: 16px;
+    max-width: 200px;
+    line-height: 1.5;
+  }
+
+  @keyframes enter-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ══════════════════════════════════
+     DIAGONAL CUT — geological strata transition
+     Sections use clip-path to create angled edges
+  ══════════════════════════════════ */
+  .strata-top {
+    clip-path: polygon(0 clamp(24px, 3vw, 48px), 100% 0, 100% 100%, 0 100%);
+    margin-top: calc(-1 * clamp(24px, 3vw, 48px));
+  }
+  .strata-top-reverse {
+    clip-path: polygon(0 0, 100% clamp(24px, 3vw, 48px), 100% 100%, 0 100%);
+    margin-top: calc(-1 * clamp(24px, 3vw, 48px));
+  }
+
+  /* ══════════════════════════════════
+     NUMBERS — stat blocks as geological core samples
+  ══════════════════════════════════ */
+  .numbers {
+    background: var(--bedrock);
+    color: var(--earth-light);
+    padding: clamp(100px, 12vh, 180px) clamp(32px, 6vw, 100px) clamp(80px, 10vh, 140px);
+    position: relative;
+  }
+
+  .numbers-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .numbers h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: var(--earth-light);
+    margin-bottom: 72px;
+  }
+
+  /* Core sample blocks — vertical emphasis, not card grid */
+  .core-samples {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--bedrock-light);
+  }
+
+  .core {
+    padding: clamp(28px, 4vw, 48px);
+    position: relative;
+  }
+  .core--earth { background: var(--bedrock-mid); }
+  .core--water {
+    background: var(--water-deep);
+    /* This is the water layer — the only blue stat block */
+  }
+
+  .core-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 16px;
+  }
+
+  .core-num {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 700;
+    line-height: 0.9;
+    color: var(--earth-light);
+    margin-bottom: 16px;
+    letter-spacing: -3px;
+  }
+  .core--water .core-num {
+    color: var(--water-surface);
+  }
+
+  .core-desc {
+    font-size: clamp(14px, 1.3vw, 17px);
+    line-height: 1.6;
+    color: rgba(255,255,255,0.55);
+    max-width: 360px;
+  }
+  .core-desc strong {
+    color: rgba(255,255,255,0.85);
+    font-weight: 700;
+  }
+
+  /* ══════════════════════════════════
+     THE WATER SECTION — a rare blue moment
+     This is the ONLY section with a water background.
+     It represents what's at stake.
+  ══════════════════════════════════ */
+  .water-moment {
+    background: var(--water);
+    padding: clamp(72px, 10vh, 140px) clamp(32px, 6vw, 100px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Subtle horizontal ripple lines */
+  .water-moment::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 28px,
+        rgba(255,255,255,0.04) 28px,
+        rgba(255,255,255,0.04) 29px
+      );
+    pointer-events: none;
+    animation: ripple-drift 12s linear infinite;
+  }
+  @keyframes ripple-drift {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(29px); }
+  }
+
+  .water-moment-inner {
+    max-width: 900px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .water-moment blockquote {
+    font-family: 'Source Serif 4', serif;
+    font-size: clamp(22px, 3vw, 38px);
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.35;
+    font-style: italic;
+    margin-bottom: 28px;
+  }
+
+  .water-moment cite {
+    display: block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    font-style: normal;
+    letter-spacing: 1px;
+  }
+
+  /* ══════════════════════════════════
+     RATE CONFRONTATION
+     Two blocks that OVERLAP — not side by side.
+     Your rate is on top, their rate slides underneath.
+     The visual weight shows who's getting crushed.
+  ══════════════════════════════════ */
+  .rates {
+    background: var(--earth);
+    padding: clamp(80px, 10vh, 140px) clamp(32px, 6vw, 100px);
+    position: relative;
+  }
+
+  /* Cracked earth texture on this section */
+  .rates::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image:
+      linear-gradient(35deg, transparent 47%, var(--cracked) 47.3%, var(--cracked) 47.6%, transparent 48%),
+      linear-gradient(-62deg, transparent 46%, var(--cracked) 46.2%, var(--cracked) 46.5%, transparent 47%),
+      linear-gradient(78deg, transparent 49%, var(--cracked) 49.2%, var(--cracked) 49.4%, transparent 50%);
+    background-size: 600px 400px, 500px 350px, 400px 500px;
+    pointer-events: none;
+  }
+
+  .rates-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .rates h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .rates-intro {
+    font-size: clamp(16px, 1.5vw, 20px);
+    color: var(--ink-mid);
+    line-height: 1.65;
+    max-width: 680px;
+    margin-bottom: 56px;
+  }
+  .rates-intro strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* Overlapping rate blocks — physical weight metaphor */
+  .rate-stack {
+    max-width: 640px;
+    margin-bottom: 56px;
+  }
+
+  .rate-block {
+    padding: clamp(24px, 3vw, 40px) clamp(28px, 4vw, 48px);
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: clamp(16px, 3vw, 32px);
+  }
+
+  .rate-block--you {
+    background: var(--rust);
+    color: #fff;
+    z-index: 2;
+    position: relative;
+  }
+
+  .rate-block--them {
+    background: var(--water-deep);
+    color: #fff;
+    margin-top: -8px;
+    margin-left: 40px;
+    z-index: 1;
+    position: relative;
+  }
+
+  .rate-who {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    min-width: 80px;
+  }
+
+  .rate-price {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+
+  .rate-unit {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .rates-body {
+    font-size: clamp(15px, 1.4vw, 18px);
+    color: var(--ink-mid);
+    line-height: 1.65;
+    max-width: 680px;
+  }
+  .rates-body strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* ══════════════════════════════════
+     DEMANDS — stenciled on the desert
+  ══════════════════════════════════ */
+  .demands {
+    background: var(--earth-pale);
+    padding: clamp(80px, 10vh, 140px) clamp(32px, 6vw, 100px);
+    position: relative;
+  }
+
+  .demands-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .demands h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: var(--ink);
+    margin-bottom: 72px;
+  }
+
+  .demand-list {
+    list-style: none;
+  }
+
+  .demand-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(20px, 3vw, 48px);
+    padding: clamp(28px, 3vw, 40px) 0;
+    border-top: 1px solid var(--earth-dark);
+    align-items: start;
+  }
+  .demand-item:last-child {
+    border-bottom: 1px solid var(--earth-dark);
+  }
+
+  .demand-num {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(40px, 5vw, 60px);
+    color: var(--earth-dark);
+    line-height: 0.85;
+    min-width: 56px;
+  }
+
+  .demand-item h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(18px, 2vw, 24px);
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .demand-item p {
+    font-size: clamp(14px, 1.2vw, 16px);
+    color: var(--ink-mid);
+    line-height: 1.65;
+    max-width: 560px;
+  }
+
+  /* ══════════════════════════════════
+     PIPELINE — bars that look like
+     water pipes filling/draining
+  ══════════════════════════════════ */
+  .pipeline {
+    background: var(--bedrock);
+    padding: clamp(100px, 12vh, 180px) clamp(32px, 6vw, 100px) clamp(80px, 10vh, 140px);
+    position: relative;
+  }
+
+  .pipeline-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .pipeline h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: var(--earth-light);
+    margin-bottom: 24px;
+  }
+
+  .pipeline-sub {
+    font-size: clamp(16px, 1.5vw, 20px);
+    color: var(--earth-deep);
+    line-height: 1.65;
+    max-width: 680px;
+    margin-bottom: 64px;
+  }
+  .pipeline-sub strong { color: var(--earth-light); }
+
+  .pipe {
+    margin-bottom: 28px;
+  }
+
+  .pipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+    gap: 16px;
+  }
+
+  .pipe-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--earth-deep);
+    letter-spacing: 0.5px;
+  }
+
+  .pipe-value {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 700;
+    color: var(--earth-light);
+    line-height: 1;
+  }
+  .pipe-unit {
+    font-size: 10px;
+    color: var(--earth-deep);
+    font-weight: 400;
+    margin-left: 4px;
+    letter-spacing: 1px;
+  }
+
+  .pipe-track {
+    height: 24px;
+    background: var(--bedrock-light);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pipe-fill {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 0;
+    transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .pipe-fill--rust { background: var(--rust); }
+  .pipe-fill--water { background: var(--water); }
+  .pipe-fill--water-bright { background: linear-gradient(90deg, var(--water), var(--water-bright)); }
+  .pipe-fill--water-deep { background: var(--water-deep); }
+
+  /* ══════════════════════════════════
+     CANDIDATES
+  ══════════════════════════════════ */
+  .candidates {
+    background: var(--earth);
+    padding: clamp(80px, 10vh, 140px) clamp(32px, 6vw, 100px);
+    position: relative;
+  }
+
+  .candidates-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .candidates h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+
+  .candidates-intro {
+    font-size: clamp(16px, 1.5vw, 20px);
+    color: var(--ink-mid);
+    line-height: 1.65;
+    max-width: 580px;
+    margin-bottom: 64px;
+  }
+
+  /* Candidates as horizontal "profile strips" — not cards */
+  .candidate-strip {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--earth-dark);
+  }
+
+  a.cand {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .cand {
+    display: grid;
+    grid-template-columns: clamp(80px, 12vw, 160px) 1fr;
+    background: var(--earth-pale);
+    align-items: center;
+    gap: 0;
+    transition: background 0.3s ease;
+  }
+  .cand:hover {
+    background: #fff;
+  }
+
+  .cand-initials {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(28px, 4vw, 48px);
+    color: var(--water);
+    text-align: center;
+    padding: clamp(16px, 2vw, 28px);
+    letter-spacing: 2px;
+    background: var(--bedrock);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cand-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(30%);
+    transition: filter 0.3s ease;
+  }
+  .cand:hover .cand-photo {
+    filter: grayscale(0%);
+  }
+  .cand-photo-wrap {
+    background: var(--bedrock);
+    overflow: hidden;
+    height: 100%;
+    min-height: 100px;
+  }
+
+  .cand-info {
+    padding: clamp(20px, 3vw, 32px);
+  }
+
+  .cand-role {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    margin-bottom: 6px;
+  }
+
+  .cand-name {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(20px, 2.5vw, 32px);
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+  }
+
+  .cand-bio {
+    font-size: clamp(13px, 1.2vw, 15px);
+    color: var(--ink-mid);
+    line-height: 1.55;
+    max-width: 500px;
+  }
+
+  /* ══════════════════════════════════
+     CTA — the water is gone. act now.
+  ══════════════════════════════════ */
+  .cta {
+    background: var(--bedrock);
+    padding: clamp(100px, 14vh, 200px) clamp(32px, 6vw, 100px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* The last trace of water — a thin blue line at the top */
+  .cta::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent 10%,
+      var(--water) 30%,
+      var(--water-bright) 50%,
+      var(--water) 70%,
+      transparent 90%
+    );
+    opacity: 0.6;
+  }
+
+  .cta-inner {
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: var(--earth-light);
+    margin-bottom: 24px;
+  }
+
+  .cta p {
+    font-size: clamp(16px, 1.8vw, 22px);
+    color: var(--earth-deep);
+    margin-bottom: 48px;
+    line-height: 1.6;
+    max-width: 560px;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn--primary {
+    background: var(--water);
+    color: #fff;
+    padding: 18px 36px;
+  }
+  .btn--primary:hover {
+    box-shadow: 0 8px 32px rgba(26, 107, 154, 0.3);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--earth-dark);
+    border: 1px solid var(--bedrock-light);
+    padding: 17px 35px;
+  }
+  .btn--ghost:hover {
+    border-color: var(--earth-dark);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  }
+
+  /* ══════════════════════════════════
+     FOOTER
+  ══════════════════════════════════ */
+  .footer {
+    background: var(--bedrock);
+    padding: 40px clamp(32px, 6vw, 100px);
+    border-top: 1px solid var(--bedrock-light);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .footer-brand {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--earth-deep);
+    letter-spacing: 1px;
+  }
+
+  .footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--bedrock-light);
+    line-height: 1.8;
+    letter-spacing: 0.3px;
+  }
+
+  .footer a {
+    color: var(--water-bright);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer a:hover { color: var(--water-surface); }
+
+  /* ══════════════════════════════════
+     HERO ELECTION INFO
+  ══════════════════════════════════ */
+  .hero-election {
+    margin-top: 0;
+    padding-top: clamp(20px, 3vw, 32px);
+    border-top: 1px solid var(--earth-dark);
+    max-width: 640px;
+    opacity: 0;
+    animation: enter-up 0.7s 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-election p {
+    font-size: clamp(14px, 1.3vw, 17px);
+    color: var(--ink-mid);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .hero-election p:last-child { margin-bottom: 0; }
+  .hero-election strong { color: var(--ink); font-weight: 700; }
+  .hero-election a {
+    color: var(--water);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+  .hero-election a:hover { color: var(--water-bright); }
+
+  /* ══════════════════════════════════
+     ABOUT US
+  ══════════════════════════════════ */
+  .about {
+    background: var(--earth-pale);
+    padding: clamp(80px, 10vh, 140px) clamp(32px, 6vw, 100px);
+    position: relative;
+  }
+  .about-inner { max-width: 1100px; margin: 0 auto; }
+  .about h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .about-intro {
+    font-size: clamp(16px, 1.5vw, 20px);
+    color: var(--ink-mid);
+    line-height: 1.65;
+    max-width: 680px;
+    margin-bottom: 64px;
+  }
+  .about-intro strong { color: var(--ink); font-weight: 700; }
+
+  .about-cand-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .btn--small {
+    font-size: 10px;
+    padding: 10px 20px;
+    letter-spacing: 1px;
+  }
+  .btn--rust {
+    background: var(--rust);
+    color: #fff;
+  }
+  .btn--rust:hover { box-shadow: 0 4px 16px rgba(196, 82, 42, 0.3); }
+  .btn--outline-dark {
+    background: transparent;
+    color: var(--ink-mid);
+    border: 1px solid var(--earth-dark);
+  }
+  .btn--outline-dark:hover { border-color: var(--ink); color: var(--ink); }
+
+  /* ══════════════════════════════════
+     CITATIONS
+  ══════════════════════════════════ */
+  .citations {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--bedrock-light);
+  }
+  .citation {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.35);
+    line-height: 2;
+    letter-spacing: 0.3px;
+  }
+
+  /* ══════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════ */
+  @media (max-width: 900px) {
+    .gauge { width: 36px; }
+    .page { margin-left: 36px; }
+    .gauge-label { display: none; }
+
+    .hero-readout {
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .core-samples {
+      grid-template-columns: 1fr;
+    }
+
+    .candidate-strip {
+      gap: 1px;
+    }
+    .cand {
+      grid-template-columns: 64px 1fr;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .gauge { width: 28px; }
+    .page { margin-left: 28px; }
+    .gauge-status { display: none; }
+
+    .severity {
+      top: 12px;
+      right: 12px;
+      font-size: 8px;
+      padding: 6px 10px;
+    }
+
+    .hero h1 {
+      font-size: 52px;
+      letter-spacing: -1px;
+    }
+
+    .numbers h2,
+    .about h2,
+    .demands h2,
+    .cta h2 {
+      font-size: 40px;
+      letter-spacing: -1px;
+    }
+
+    .core-num {
+      font-size: 48px;
+    }
+
+    .demand-item {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .demand-num {
+      font-size: 28px;
+    }
+
+    .cand {
+      grid-template-columns: 1fr;
+    }
+    .cand-initials {
+      height: auto;
+      padding: 16px;
+    }
+
+    .footer-inner {
+      flex-direction: column;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .rv { opacity: 1; transform: none; }
+    .hero-line, .hero-depth, .hero-sub, .hero-readout {
+      opacity: 1; transform: none;
+    }
+  }
+</style>
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "Not Our Water",
+      "url": "https://www.notourwater.org/",
+      "description": "Phoenix data centers consume enough water for 10,000 homes at rates cheaper than yours. Demand fair rates, full disclosure, and no more blank checks."
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://www.notourwater.org/#webpage",
+      "url": "https://www.notourwater.org/",
+      "name": "Not Our Water — Stop Subsidizing Data Centers in the Desert",
+      "description": "58+ data centers in Phoenix consume enough water for 10,000 homes at rates 44% cheaper than yours. Demand transparency and fair rates from SRP.",
+      "isPartOf": { "@id": "https://www.notourwater.org/#website" },
+      "about": {
+        "@type": "Thing",
+        "name": "Data center water consumption in Phoenix, Arizona"
+      },
+      "mainEntity": {
+        "@type": "Article",
+        "headline": "Stop Subsidizing Data Centers in the Desert",
+        "description": "Phoenix data centers consume enough drinking water for 10,000 homes while paying 44% less than residential rates. Our candidates demand fair rates, full water usage disclosure, and zero-water cooling mandates.",
+        "author": [
+          { "@type": "Person", "name": "John Travise" },
+          { "@type": "Person", "name": "Sara Travise" }
+        ],
+        "publisher": {
+          "@type": "Organization",
+          "name": "Energy Freedom Team",
+          "url": "https://energyfreedom.team"
+        },
+        "keywords": ["data center water usage", "Phoenix water crisis", "SRP election", "data center cooling", "Arizona groundwater", "SRP rates", "energy freedom"]
+      }
+    },
+    {
+      "@type": "Organization",
+      "name": "Energy Freedom Team",
+      "url": "https://energyfreedom.team",
+      "description": "Candidates for SRP Council and Board advocating for customer interests and water conservation in Phoenix, Arizona.",
+      "member": [
+        {
+          "@type": "Person",
+          "name": "John Travise",
+          "jobTitle": "Candidate for SRP Council, District 6",
+          "url": "https://energyfreedom.team"
+        },
+        {
+          "@type": "Person",
+          "name": "Sara Travise",
+          "jobTitle": "Candidate for SRP Council, District 6",
+          "url": "https://energyfreedom.team"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How much water do Phoenix data centers use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Phoenix-area data centers consume enough water for approximately 10,000 homes annually. A single Microsoft facility in Goodyear uses 56 million gallons per year — enough for 670 households. By 2031, total data center water consumption is projected to reach 3.7 billion gallons per year."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do data centers pay less for water than residents?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Google's Mesa facility pays $6.08 per 1,000 gallons — 44% less than the residential rate of $10.80. Data centers also receive industrial electricity rates averaging 7.89 cents per kWh compared to the residential average of 13.34 cents per kWh."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the Energy Freedom Team's position on data center water usage?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Energy Freedom Team demands mandatory water usage disclosure, an end to discounted rates for data centers, required zero-water cooling technology, no customer-funded grid buildouts, a moratorium on new incentives until impact studies are complete, and community benefit agreements."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<!-- ══ WATER GAUGE — depletes as you scroll ══ -->
+<div class="gauge" aria-hidden="true">
+  <div class="gauge-track">
+    <div class="gauge-fill" id="gaugeFill">
+      <div class="gauge-bubbles" id="gaugeBubbles"></div>
+    </div>
+    <div class="gauge-ticks" id="gaugeTicks"></div>
+  </div>
+  <div class="gauge-status">LEVEL</div>
+</div>
+
+<!-- ══ DROUGHT SEVERITY BADGE ══ -->
+<div class="severity" id="severity" aria-live="polite">
+  <span class="severity-dot"></span>
+  <span id="severityText">DROUGHT WATCH</span>
+</div>
+
+<!-- ══ PAGE CONTENT ══ -->
+<main class="page">
+
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+    <div class="hero-puddle"></div>
+    <div class="hero-content">
+      <div class="hero-depth">Phoenix, AZ · SRP Board Election · April 7, 2026</div>
+      <h1>
+        <span class="hero-line">NOT OUR</span>
+        <span class="hero-line"><span class="water-mark">WATER</span></span>
+      </h1>
+      <p class="hero-sub">
+        Arizona faces its worst drought in 1,200 years. Meanwhile, SRP is handing Big Tech
+        data centers <strong>discounted power</strong> — subsidized by you.
+        It's time to vote them out.
+      </p>
+      <div class="hero-election">
+        <p>The Salt River Project board election is on <strong>April 7th</strong>, with early voting starting <strong>March 11th</strong>.</p>
+        <p>You may have a right to vote even if you have APS power. <a href="/check">Check if you live on votable lands &rarr;</a></p>
+        <p>An SRP board candidate <a href="https://energyandpolicy.org/srp-landowner-games-2024-race/" target="_blank" rel="noopener">sold 240 acres to a data center company for $246.8 million</a> — after using that land to rig an SRP election. <strong>They're profiting. You're paying.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ABOUT US ══ -->
+  <section class="about strata-top">
+    <div class="about-inner">
+      <div class="marker marker--dark rv">
+        <span class="marker-line"></span> Your Team
+      </div>
+      <h2 class="rv rv-d1">We're running<br>to protect<br>your water.</h2>
+      <p class="about-intro rv rv-d2">
+        We're running for the SRP board to stop the giveaways and hold Big Tech accountable.
+        <strong>Data centers must adopt technologies that conserve water and power</strong> — not waste them.
+        And they should foot the bill. Not you.
+      </p>
+
+      <div class="candidate-strip rv rv-d3">
+        <div class="cand">
+          <a href="/john" class="cand-photo-wrap"><img src="john.jpg" alt="John Travise" class="cand-photo" width="400" height="400" loading="lazy"></a>
+          <div class="cand-info">
+            <div class="cand-role">SRP Council · District 6</div>
+            <a href="/john" class="cand-name" style="text-decoration:none;color:inherit">John Travise</a>
+            <p class="cand-bio">Army veteran. Cybersecurity professional. Solar homeowner fighting for energy independence.</p>
+            <div class="about-cand-actions">
+              <a href="https://secure.actblue.com/donate/john-travise-1" class="btn btn--rust btn--small" target="_blank" rel="noopener">Donate</a>
+              <a href="https://energyfreedom.team" class="btn btn--outline-dark btn--small" target="_blank" rel="noopener">Website</a>
+            </div>
+          </div>
+        </div>
+        <div class="cand">
+          <a href="/sara" class="cand-photo-wrap"><img src="sara.jpg" alt="Sara Travise" class="cand-photo" width="400" height="400" loading="lazy"></a>
+          <div class="cand-info">
+            <div class="cand-role">SRP Council · District 6</div>
+            <a href="/sara" class="cand-name" style="text-decoration:none;color:inherit">Sara Travise</a>
+            <p class="cand-bio">Artist and cybersecurity professional. Protecting Arizona's water for neighbors, not corporations.</p>
+            <div class="about-cand-actions">
+              <a href="https://givebutter.com/jpfCkQ" class="btn btn--rust btn--small" target="_blank" rel="noopener">Donate</a>
+              <a href="https://energyfreedom.team" class="btn btn--outline-dark btn--small" target="_blank" rel="noopener">Website</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ THE NUMBERS — geological core samples ══ -->
+  <section class="numbers strata-top">
+    <div class="numbers-inner">
+      <div class="marker marker--light rv">
+        <span class="marker-line"></span> Depth 01 · The Numbers
+      </div>
+      <h2 class="rv rv-d1">They consume.<br>You pay.</h2>
+
+      <div class="core-samples rv rv-d2">
+        <div class="core core--earth">
+          <div class="core-tag">Your power bill vs. theirs</div>
+          <div class="core-num">41%</div>
+          <div class="core-desc">
+            less than what you pay. Data centers get <strong>industrial electricity rates averaging 7.89&cent;/kWh</strong>
+            versus your 13.34&cent;/kWh.*
+          </div>
+        </div>
+        <div class="core core--earth">
+          <div class="core-tag">SRP power grid strain</div>
+          <div class="core-num">7,000+</div>
+          <div class="core-desc">
+            megawatts of data center requests in SRP's pipeline.
+            <strong>More than double SRP's entire generation capacity.</strong>**
+          </div>
+        </div>
+        <div class="core core--water">
+          <div class="core-tag">Projected water consumption · by 2031</div>
+          <div class="core-num">3.7B</div>
+          <div class="core-desc">
+            gallons of water per year consumed by data centers.
+            <strong>In a state that banned new home construction to preserve groundwater.</strong>***
+          </div>
+        </div>
+      </div>
+
+      <div class="citations rv rv-d3">
+        <div class="citation">* U.S. Energy Information Administration, average AZ industrial vs residential rates</div>
+        <div class="citation">** SRP public filings, data center interconnection requests</div>
+        <div class="citation">*** APM Research Lab, Stanford &amp; the West, Phoenix New Times reporting</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ THE WATER MOMENT — rare blue, like water itself ══ -->
+  <section class="water-moment strata-top-reverse">
+    <div class="water-moment-inner rv">
+      <blockquote>
+        "Arizona banned new home construction in the Phoenix area to preserve
+        groundwater — while guaranteeing Google enough water for 13,000
+        households every single day."
+      </blockquote>
+      <cite>— Public records, City of Mesa, AZ (Google guaranteed up to 4M gallons/day)</cite>
+    </div>
+  </section>
+
+  <!-- ══ DEMANDS ══ -->
+  <section class="demands strata-top">
+    <div class="demands-inner">
+      <div class="marker marker--dark rv">
+        <span class="marker-line"></span> What We Support
+      </div>
+      <h2 class="rv rv-d1">Fair rates.<br>Our water.<br>No more blank checks.</h2>
+
+      <ol class="demand-list">
+        <li class="demand-item rv">
+          <div class="demand-num">01</div>
+          <div>
+            <h3>Reduce the rate discount</h3>
+            <p>Data centers shouldn't get sweetheart deals on water and power while residential customers bear the full cost. Narrow the gap between industrial and residential rates so billion-dollar companies pay their fair share.</p>
+          </div>
+        </li>
+        <li class="demand-item rv">
+          <div class="demand-num">02</div>
+          <div>
+            <h3>Require zero-water cooling</h3>
+            <p>CyrusOne runs 8 facilities in Chandler with zero-water cooling. Microsoft is piloting it. If the technology exists, make it the standard — not a PR talking point.</p>
+          </div>
+        </li>
+        <li class="demand-item rv">
+          <div class="demand-num">03</div>
+          <div>
+            <h3>No grid build-out on customer dimes</h3>
+            <p>If data centers need SRP to double its generation capacity, data centers should pay for the infrastructure — not residential customers through higher bills.</p>
+          </div>
+        </li>
+        <li class="demand-item rv">
+          <div class="demand-num">04</div>
+          <div>
+            <h3>No data centers on taxpayer's dime</h3>
+            <p>In 2013, the Arizona Legislature cut taxes for data centers, shifting the burden to taxpayers. No more public subsidies — no tax abatements, no water guarantees, no sweetheart infrastructure deals — until independent impact studies are complete.</p>
+          </div>
+        </li>
+        <li class="demand-item rv">
+          <div class="demand-num">05</div>
+          <div>
+            <h3>Community benefit agreements</h3>
+            <p>If a data center wants to operate here, it should invest here. Local hiring, infrastructure contributions, and community fund commitments — in writing, before permitting.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ══ CTA ══ -->
+  <section class="cta strata-top-reverse">
+    <div class="cta-inner rv">
+      <div class="marker marker--blue">
+        <span class="marker-line"></span> Surface · Act Now
+      </div>
+      <h2>This is your water.<br>Your grid.<br>Your vote.</h2>
+      <p>
+        The SRP election decides who controls your power and water.
+        Vote for the Energy Freedom Team. Customers come first.
+      </p>
+      <div class="cta-actions">
+        <a href="/check" class="btn btn--primary">Check Your Registration</a>
+        <a href="/signs" class="btn btn--ghost">Fund Anti-TPUSA Signs</a>
+        <button class="btn btn--ghost" onclick="shareThis()">Send This to Your Neighbor</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">NOTOURWATER.ORG</div>
+      <p>
+        Paid for by the Energy Freedom Team<br>
+        John Travise & Sara Travise<br>
+        SRP District 6
+      </p>
+      <p>
+        Sources: TIME, APM Research Lab,<br>
+        Phoenix New Times, Stanford & the West,<br>
+        SRP public filings<br>
+        <a href="https://energyfreedom.team">Contact</a>
+      </p>
+    </div>
+  </footer>
+
+</main><!-- .page -->
+
+<script>
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  posthog.init('phc_B6KxW3gqUjgK4OmAf1wjUUyijREMbQo597M6jRqByRb', {api_host: 'https://us.i.posthog.com', person_profiles: 'identified_only'});
+</script>
+<script>
+  // ── Water gauge — depletes as you scroll ──
+  const gaugeFill = document.getElementById('gaugeFill');
+  const gaugeTicksEl = document.getElementById('gaugeTicks');
+  const severity = document.getElementById('severity');
+  const severityText = document.getElementById('severityText');
+
+  // Generate bubbles in the water gauge
+  (function buildBubbles() {
+    const container = document.getElementById('gaugeBubbles');
+    const count = 8;
+    for (let i = 0; i < count; i++) {
+      const b = document.createElement('span');
+      b.className = 'gauge-bubble';
+      const size = 3 + Math.random() * 5;
+      b.style.width = size + 'px';
+      b.style.height = size + 'px';
+      b.style.left = (4 + Math.random() * 28) + 'px';
+      b.style.animationDuration = (4 + Math.random() * 6) + 's';
+      b.style.animationDelay = (Math.random() * 8) + 's';
+      container.appendChild(b);
+    }
+  })();
+
+  // Generate tick marks on the gauge
+  (function buildTicks() {
+    const h = window.innerHeight;
+    const count = Math.floor(h / 40);
+    for (let i = 0; i <= count; i++) {
+      const pct = (i / count) * 100;
+      const tick = document.createElement('div');
+      tick.className = 'gauge-tick ' + (i % 5 === 0 ? 'gauge-tick--major' : 'gauge-tick--minor');
+      tick.style.top = pct + '%';
+      gaugeTicksEl.appendChild(tick);
+    }
+  })();
+
+  // Scroll handler — gauge + severity
+  function onScroll() {
+    const scrollPct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+    const waterLevel = Math.max(0, 1 - scrollPct * 1.15);
+
+    gaugeFill.style.height = (waterLevel * 100) + '%';
+
+    // Severity escalation
+    if (scrollPct > 0.05) {
+      severity.classList.add('visible');
+    }
+
+    if (scrollPct < 0.15) {
+      severity.dataset.level = 'watch';
+      severityText.textContent = 'DROUGHT WATCH';
+    } else if (scrollPct < 0.35) {
+      severity.dataset.level = 'warning';
+      severityText.textContent = 'DROUGHT WARNING';
+    } else if (scrollPct < 0.6) {
+      severity.dataset.level = 'emergency';
+      severityText.textContent = 'EMERGENCY';
+    } else {
+      severity.dataset.level = 'critical';
+      severityText.textContent = 'CRITICAL';
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // ── Scroll reveal ──
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('vis');
+
+        // Animate pipe fills
+        entry.target.querySelectorAll('.pipe-fill[data-width]').forEach(fill => {
+          setTimeout(() => { fill.style.width = fill.dataset.width; }, 200);
+        });
+
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('.rv').forEach(el => revealObs.observe(el));
+
+  // ── Number count-up (monospace readouts) ──
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.dataset.count);
+        const suffix = el.dataset.suffix || '';
+        const useComma = el.dataset.format === 'comma';
+        const duration = 1600;
+        const start = performance.now();
+
+        function tick(now) {
+          const t = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - t, 5);
+          let v = Math.round(eased * target);
+          el.textContent = (useComma ? v.toLocaleString() : v) + suffix;
+          if (t < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        countObs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+  // ── Share ──
+  function shareThis() {
+    const data = {
+      title: 'Not Our Water',
+      text: '58+ data centers in Phoenix consume enough water for 10,000 homes — at rates cheaper than yours. Our elected officials signed off on this.',
+      url: 'https://www.notourwater.org/'
+    };
+    if (navigator.share) {
+      navigator.share(data).catch(() => {});
+    } else {
+      navigator.clipboard.writeText(data.url).then(() => {
+        const btn = document.querySelector('.cta .btn--primary');
+        const orig = btn.textContent;
+        btn.textContent = 'Link Copied!';
+        setTimeout(() => { btn.textContent = orig; }, 2000);
+      });
+    }
+  }
+</script>
+</body>
+</html>

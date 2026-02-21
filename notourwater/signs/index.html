@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fund the Fight — Counter Signs Next to Every TPUSA Sign | Not Our Water</title>
+<meta name="description" content="Turning Point USA is blanketing District 6 with signs. Help us place a counter-sign right beside every one of them. They won't go unanswered.">
+<link rel="canonical" href="https://www.notourwater.org/signs/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#1a1612">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Fund the Fight — Counter Signs Next to Every TPUSA Sign">
+<meta property="og:description" content="Turning Point USA is blanketing District 6 with signs. Help us place a counter-sign right beside every one. $15 = one sign. They won't go unanswered.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.notourwater.org/signs/">
+<meta property="og:site_name" content="Not Our Water">
+<meta property="og:image" content="https://www.notourwater.org/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fund the Fight — Counter Signs Next to Every TPUSA Sign">
+<meta name="twitter:description" content="TPUSA is blanketing District 6 with signs. Help us place a counter-sign right beside every one. They won't go unanswered.">
+<meta name="twitter:image" content="https://www.notourwater.org/og-image.png">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+<script async src="https://widgets.givebutter.com/latest.umd.cjs?acct=0WdSrQXijaQMq7xf&p=other"></script>
+<style>
+  :root {
+    --earth: #e2d5be;
+    --earth-light: #f0e8d8;
+    --earth-pale: #f7f2ea;
+    --earth-dark: #c8b896;
+    --earth-deep: #a89470;
+    --cracked: #8a7656;
+    --bedrock: #1a1612;
+    --bedrock-mid: #2a2420;
+    --bedrock-light: #3d352e;
+    --water: #1a6b9a;
+    --water-bright: #2a8fc7;
+    --water-deep: #0e3f5e;
+    --water-surface: #8cc5e3;
+    --water-glow: rgba(42, 143, 199, 0.12);
+    --rust: #c4522a;
+    --rust-dark: #8b3318;
+    --rust-light: #e07040;
+    --ink: #12100e;
+    --ink-mid: #5a5248;
+    --ink-light: #8a8072;
+    /* Fight-specific — urgent red accent */
+    --fight: #b82e1a;
+    --fight-light: #d44a2e;
+    --fight-glow: rgba(184, 46, 26, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--bedrock);
+    color: var(--earth-light);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Grain */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── Back link ── */
+  .back {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--earth-deep);
+    padding: 10px 16px;
+    background: var(--bedrock);
+    border: 1px solid var(--bedrock-light);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .back:hover {
+    border-color: var(--earth-dark);
+    color: var(--earth-light);
+    transform: translateY(-1px);
+  }
+  .back-arrow {
+    display: inline-block;
+    margin-right: 6px;
+  }
+
+  /* ── Scroll reveal ── */
+  .rv {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .rv.vis { opacity: 1; transform: translateY(0); }
+  .rv-d1 { transition-delay: 0.08s; }
+  .rv-d2 { transition-delay: 0.16s; }
+  .rv-d3 { transition-delay: 0.24s; }
+  .rv-d4 { transition-delay: 0.32s; }
+  .rv-d5 { transition-delay: 0.40s; }
+
+  /* ── Section marker ── */
+  .marker {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .marker-line { width: 32px; height: 1px; }
+  .marker--light { color: var(--earth-dark); }
+  .marker--light .marker-line { background: var(--earth-dark); }
+  .marker--red { color: var(--fight-light); }
+  .marker--red .marker-line { background: var(--fight-light); }
+  .marker--blue { color: var(--water-bright); }
+  .marker--blue .marker-line { background: var(--water-bright); }
+
+  /* ══════════════════════════════════
+     HERO — dark, urgent, immediate
+  ══════════════════════════════════ */
+  .hero {
+    min-height: 100vh;
+    min-height: 100svh;
+    background: var(--bedrock);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(100px, 14vh, 180px) clamp(32px, 6vw, 100px);
+    overflow: hidden;
+  }
+
+  /* Diagonal warning stripes — subtle, like hazard tape */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.02;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      var(--fight) 40px,
+      var(--fight) 42px
+    );
+    pointer-events: none;
+  }
+
+  /* Red glow — urgency */
+  .hero-glow {
+    position: absolute;
+    top: 30%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, var(--fight-glow) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+  }
+
+  .hero-alert {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--fight-light);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: enter-up 0.7s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-alert-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--fight);
+    animation: pulse-dot 1.5s ease infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(52px, 10vw, 120px);
+    line-height: 0.9;
+    color: var(--earth-light);
+    letter-spacing: -2px;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: enter-up 0.8s 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero h1 .accent {
+    color: var(--fight-light);
+  }
+
+  .hero-sub {
+    font-size: clamp(17px, 1.8vw, 22px);
+    line-height: 1.65;
+    color: var(--earth-deep);
+    max-width: 600px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: enter-up 0.7s 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .hero-sub strong { color: var(--earth-light); font-weight: 700; }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: enter-up 0.7s 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes enter-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ══════════════════════════════════
+     BUTTONS
+  ══════════════════════════════════ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(1px); transition-duration: 0.06s; }
+
+  .btn--fight {
+    background: var(--fight);
+    color: #fff;
+    padding: 20px 40px;
+    font-size: 13px;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn--fight::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .btn--fight:hover::after { opacity: 1; }
+  .btn--fight:hover { box-shadow: 0 8px 32px rgba(184, 46, 26, 0.45), 0 0 0 1px rgba(184, 46, 26, 0.15); }
+  .btn--fight:active::after { opacity: 0.4; }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--earth-dark);
+    border: 1px solid var(--bedrock-light);
+    padding: 19px 39px;
+  }
+  .btn--ghost:hover {
+    border-color: var(--earth-dark);
+    color: var(--earth-light);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  }
+
+  .btn--water {
+    background: var(--water);
+    color: #fff;
+    padding: 18px 36px;
+  }
+  .btn--water:hover { box-shadow: 0 8px 32px rgba(26, 107, 154, 0.3); }
+
+  /* ══════════════════════════════════
+     CONTEXT — why this matters
+  ══════════════════════════════════ */
+  .context {
+    background: var(--earth);
+    color: var(--ink);
+    padding: clamp(80px, 12vh, 160px) clamp(32px, 6vw, 100px);
+    position: relative;
+    clip-path: polygon(0 clamp(24px, 3vw, 48px), 100% 0, 100% 100%, 0 100%);
+    margin-top: calc(-1 * clamp(24px, 3vw, 48px));
+  }
+
+  .context-inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .context h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 0.95;
+    letter-spacing: -1px;
+    color: var(--ink);
+    margin-bottom: 32px;
+  }
+
+  .context-body {
+    font-size: clamp(16px, 1.5vw, 20px);
+    line-height: 1.7;
+    color: var(--ink-mid);
+    margin-bottom: 40px;
+  }
+  .context-body strong { color: var(--ink); font-weight: 700; }
+  .context-body p + p { margin-top: 20px; }
+
+  /* Callout quote */
+  .callout {
+    background: var(--earth-pale);
+    border-left: 3px solid var(--fight);
+    padding: 28px 32px;
+    margin: 40px 0;
+    font-size: clamp(16px, 1.4vw, 19px);
+    line-height: 1.6;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .callout strong { font-style: normal; }
+
+  /* ══════════════════════════════════
+     IMPACT TIERS — what your money does
+  ══════════════════════════════════ */
+  .impact {
+    background: var(--bedrock);
+    padding: clamp(80px, 12vh, 160px) clamp(32px, 6vw, 100px);
+    position: relative;
+    clip-path: polygon(0 0, 100% clamp(24px, 3vw, 48px), 100% 100%, 0 100%);
+    margin-top: calc(-1 * clamp(24px, 3vw, 48px));
+  }
+
+  .impact-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .impact h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(36px, 6vw, 64px);
+    line-height: 0.95;
+    letter-spacing: -1px;
+    color: var(--earth-light);
+    margin-bottom: 16px;
+  }
+
+  .impact-subtitle {
+    font-size: clamp(15px, 1.3vw, 18px);
+    color: var(--earth-deep);
+    line-height: 1.6;
+    margin-bottom: 56px;
+    max-width: 540px;
+  }
+
+  /* Tier grid */
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--bedrock-light);
+    margin-bottom: 56px;
+  }
+
+  .tier {
+    background: var(--bedrock-mid);
+    padding: clamp(28px, 4vw, 44px);
+    position: relative;
+    transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    cursor: default;
+  }
+  .tier:hover {
+    background: var(--bedrock-light);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+  }
+  .tier:hover .tier-amount {
+    text-shadow: 0 0 40px rgba(184, 46, 26, 0.4);
+  }
+
+  /* Featured tier */
+  .tier--featured {
+    background: var(--fight);
+  }
+  .tier--featured:hover {
+    background: var(--fight-light);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 56px rgba(184, 46, 26, 0.35);
+  }
+  .tier--featured:hover .tier-amount {
+    text-shadow: 0 0 40px rgba(255,255,255,0.3);
+  }
+  .tier--featured .tier-label { color: rgba(255,255,255,0.6); }
+  .tier--featured .tier-amount { color: #fff; }
+  .tier--featured .tier-desc { color: rgba(255,255,255,0.8); }
+  .tier--featured .tier-detail { color: rgba(255,255,255,0.55); }
+
+  .tier-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 16px;
+  }
+
+  .tier-amount {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 700;
+    line-height: 0.9;
+    color: var(--earth-light);
+    margin-bottom: 20px;
+    letter-spacing: -2px;
+    transition: text-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .tier-desc {
+    font-size: clamp(15px, 1.2vw, 18px);
+    line-height: 1.5;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 8px;
+    flex: 1;
+  }
+  .tier-desc strong {
+    color: rgba(255,255,255,0.9);
+    font-weight: 700;
+  }
+
+  .tier-detail {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.5px;
+    margin-top: 12px;
+  }
+
+  /* Large "Fund the Fight" CTA */
+  .impact-cta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .impact-note {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--earth-deep);
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+    max-width: 340px;
+  }
+
+  /* Traffic stat callout */
+  .traffic-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 24px 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 48px;
+  }
+  .traffic-stat-num {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    color: var(--fight-light);
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .traffic-stat-text {
+    font-size: clamp(14px, 1.3vw, 17px);
+    color: var(--earth-deep);
+    line-height: 1.5;
+  }
+
+  /* Givebutter widget wrapper */
+  .progress-wrap {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* Share toast */
+  .share-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--bedrock-mid);
+    color: var(--earth-light);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid var(--bedrock-light);
+    z-index: 1000;
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .share-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* ══════════════════════════════════
+     URGENCY COUNTER
+  ══════════════════════════════════ */
+  .urgency {
+    background: var(--earth);
+    color: var(--ink);
+    padding: clamp(60px, 8vh, 100px) clamp(32px, 6vw, 100px);
+    text-align: center;
+    position: relative;
+    clip-path: polygon(0 clamp(24px, 3vw, 48px), 100% 0, 100% 100%, 0 100%);
+    margin-top: calc(-1 * clamp(24px, 3vw, 48px));
+  }
+
+  .urgency-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .countdown-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cracked);
+    margin-bottom: 20px;
+  }
+
+  .countdown {
+    display: flex;
+    justify-content: center;
+    gap: clamp(20px, 4vw, 48px);
+    margin-bottom: 32px;
+  }
+
+  .countdown-unit {
+    text-align: center;
+  }
+
+  .countdown-num {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(48px, 8vw, 80px);
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+
+  .countdown-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cracked);
+    margin-top: 8px;
+  }
+
+  .urgency p {
+    font-size: clamp(16px, 1.4vw, 20px);
+    line-height: 1.6;
+    color: var(--ink-mid);
+    max-width: 520px;
+    margin: 0 auto 32px;
+  }
+  .urgency p strong { color: var(--ink); }
+
+  /* ══════════════════════════════════
+     HOW IT WORKS — simple 3-step
+  ══════════════════════════════════ */
+  .how {
+    background: var(--bedrock);
+    padding: clamp(80px, 10vh, 140px) clamp(32px, 6vw, 100px);
+    position: relative;
+    clip-path: polygon(0 0, 100% clamp(24px, 3vw, 48px), 100% 100%, 0 100%);
+    margin-top: calc(-1 * clamp(24px, 3vw, 48px));
+  }
+
+  .how-inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .how h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 0.95;
+    color: var(--earth-light);
+    margin-bottom: 48px;
+  }
+
+  .steps {
+    display: grid;
+    gap: 0;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 0;
+    border-top: 1px solid var(--bedrock-light);
+    padding: 32px 0;
+  }
+  .step:last-child {
+    border-bottom: 1px solid var(--bedrock-light);
+  }
+
+  .step-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--bedrock-light);
+    line-height: 1;
+    padding-top: 2px;
+  }
+
+  .step h3 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: var(--earth-light);
+    margin-bottom: 8px;
+  }
+
+  .step p {
+    font-size: 15px;
+    color: var(--earth-deep);
+    line-height: 1.6;
+  }
+
+  /* ══════════════════════════════════
+     REPORT CTA — map link
+  ══════════════════════════════════ */
+  .report-cta {
+    margin-top: 48px;
+    padding: 32px;
+    background: var(--bedrock-mid);
+    border: 1px solid var(--bedrock-light);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .report-text {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--earth-light);
+    white-space: nowrap;
+  }
+  .report-note {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--earth-deep);
+    letter-spacing: 0.5px;
+  }
+  @media (max-width: 600px) {
+    .report-cta { padding: 24px; gap: 14px; }
+    .report-text { font-size: 16px; white-space: normal; }
+  }
+
+  /* ══════════════════════════════════
+     FINAL CTA
+  ══════════════════════════════════ */
+  .final {
+    background: var(--fight);
+    padding: clamp(80px, 12vh, 160px) clamp(32px, 6vw, 100px);
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(0 clamp(24px, 3vw, 48px), 100% 0, 100% 100%, 0 100%);
+    margin-top: calc(-1 * clamp(24px, 3vw, 48px));
+  }
+
+  /* Diagonal stripes */
+  .final::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.06;
+    background: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 30px,
+      rgba(0,0,0,0.3) 30px,
+      rgba(0,0,0,0.3) 32px
+    );
+    pointer-events: none;
+  }
+
+  .final-inner {
+    max-width: 900px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .final h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: clamp(40px, 7vw, 80px);
+    line-height: 0.92;
+    letter-spacing: -2px;
+    color: #fff;
+    margin-bottom: 24px;
+  }
+
+  .final p {
+    font-size: clamp(16px, 1.6vw, 20px);
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 500px;
+  }
+
+  .final-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn--white {
+    background: #fff;
+    color: var(--fight);
+    padding: 20px 40px;
+    font-size: 13px;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn--white::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(184, 46, 26, 0.08) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .btn--white:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+  .btn--white:hover::after { opacity: 1; }
+  .btn--white:active::after { opacity: 0.6; }
+
+  .btn--ghost-light {
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 19px 39px;
+  }
+  .btn--ghost-light:hover {
+    border-color: rgba(255,255,255,0.6);
+    color: #fff;
+  }
+
+  /* ══════════════════════════════════
+     FOOTER
+  ══════════════════════════════════ */
+  .footer {
+    background: var(--bedrock);
+    padding: 40px clamp(32px, 6vw, 100px);
+    border-top: 1px solid var(--bedrock-light);
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .footer-brand {
+    font-family: 'Archivo Black', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: var(--earth-deep);
+    letter-spacing: 1px;
+  }
+  .footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--bedrock-light);
+    line-height: 1.8;
+    letter-spacing: 0.3px;
+  }
+  .footer a {
+    color: var(--water-bright);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer a:hover { color: var(--water-surface); }
+
+  /* ══════════════════════════════════
+     RESPONSIVE
+  ══════════════════════════════════ */
+  @media (max-width: 900px) {
+    .tiers {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .hero h1 br,
+    .context h2 br,
+    .impact h2 br,
+    .how h2 br,
+    .final h2 br { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 {
+      font-size: 44px;
+      letter-spacing: -1px;
+    }
+    .context h2,
+    .impact h2,
+    .how h2,
+    .final h2 {
+      font-size: 36px;
+      letter-spacing: -1px;
+    }
+    .tier-amount {
+      font-size: 40px;
+    }
+    .step {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+    .step-num {
+      font-size: 24px;
+    }
+    .countdown-num {
+      font-size: 40px;
+    }
+    .footer-inner {
+      flex-direction: column;
+    }
+    .back {
+      top: 12px;
+      left: 12px;
+      font-size: 9px;
+      padding: 8px 12px;
+    }
+  }
+
+  /* ══════════════════════════════════
+     SCROLL PROGRESS — thin red line at top
+  ══════════════════════════════════ */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: var(--fight);
+    width: 0%;
+    z-index: 200;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 8px rgba(184, 46, 26, 0.5);
+  }
+
+  /* ══════════════════════════════════
+     COUNTDOWN DIGIT ANIMATION
+  ══════════════════════════════════ */
+  .countdown-num {
+    position: relative;
+    overflow: hidden;
+  }
+  .countdown-num .digit-out {
+    animation: digit-exit 0.35s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+  }
+  .countdown-num .digit-in {
+    animation: digit-enter 0.35s 0.1s cubic-bezier(0, 0.55, 0.45, 1) forwards;
+    opacity: 0;
+  }
+  @keyframes digit-exit {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-16px); }
+  }
+  @keyframes digit-enter {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ══════════════════════════════════
+     STEP HOVER — subtle left accent
+  ══════════════════════════════════ */
+  .step {
+    border-left: 2px solid transparent;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .step:hover {
+    background: rgba(255,255,255,0.02);
+    border-left-color: var(--fight);
+  }
+  .step:hover .step-num {
+    color: var(--fight-light);
+  }
+  .step-num {
+    transition: color 0.3s ease;
+  }
+
+  /* ══════════════════════════════════
+     FLOATING ACTION BUTTONS
+  ══════════════════════════════════ */
+  .fab-group {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-end;
+  }
+  .fab {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 22px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+  }
+  .fab:hover {
+    transform: translateY(-2px);
+  }
+  .fab:active { transform: translateY(1px); transition-duration: 0.06s; }
+  .fab--donate {
+    background: var(--fight);
+    color: #fff;
+  }
+  .fab--donate:hover { box-shadow: 0 8px 32px rgba(184, 46, 26, 0.5); }
+  .fab--report {
+    background: var(--bedrock-mid);
+    color: var(--earth-light);
+    border: 1px solid var(--bedrock-light);
+  }
+  .fab--report:hover {
+    box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+    border-color: var(--earth-dark);
+  }
+  .fab-icon {
+    font-size: 16px;
+    line-height: 1;
+  }
+  @media (max-width: 600px) {
+    .fab-group { bottom: 16px; right: 16px; gap: 10px; }
+    .fab { padding: 12px 18px; font-size: 10px; }
+  }
+  /* Hide FABs when hero CTA is visible */
+  .fab-group.fab-hidden { opacity: 0; pointer-events: none; transform: translateY(16px); }
+  .fab-group { transition: opacity 0.3s ease, transform 0.3s ease; }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .rv { opacity: 1; transform: none; }
+    .hero h1, .hero-alert, .hero-sub, .hero-cta {
+      opacity: 1; transform: none;
+    }
+    .scroll-progress { display: none; }
+    .countdown-num .digit-out,
+    .countdown-num .digit-in { animation: none; opacity: 1; transform: none; }
+  }
+</style>
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Fund the Fight — Counter Signs Next to Every TPUSA Sign",
+  "description": "Turning Point USA is blanketing District 6 with signs. Help us place a counter-sign right beside every one of them.",
+  "url": "https://www.notourwater.org/signs/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Not Our Water",
+    "url": "https://www.notourwater.org/"
+  }
+}
+</script>
+</head>
+<body>
+
+<!-- Scroll progress -->
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+<!-- Back to main site -->
+<a href="/" class="back"><span class="back-arrow">&larr;</span> NotOurWater.org</a>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-alert">
+      <span class="hero-alert-dot"></span>
+      Counter-campaign · Urgent
+    </div>
+    <h1>THEY HAVE <br>DARK MONEY. <br>WE HAVE <span class="accent">YOU.</span></h1>
+    <p class="hero-sub">
+      <strong>Turning Point USA is blanketing District 6 with signs.</strong>
+      Every intersection. Every major road. Help us place a counter-sign
+      right beside every one of theirs.
+    </p>
+    <div class="hero-cta">
+      <a href="#donate" class="btn btn--fight">Fund Counter-Signs</a>
+      <a href="#why" class="btn btn--ghost">Why This Matters</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTEXT — why signs matter ══ -->
+<section class="context" id="why">
+  <div class="context-inner">
+    <div class="marker marker--red rv">
+      <span class="marker-line"></span> The Threat
+    </div>
+    <h2 class="rv rv-d1">Turning Point <br>is here.</h2>
+    <div class="context-body rv rv-d2">
+      <p>
+        Turning Point USA — Charlie Kirk's national dark money machine — has targeted
+        the SRP election. Their playbook: <strong>flood every intersection with signs
+        for corporate-backed candidates</strong> who will kill rooftop solar incentives,
+        maintain sweetheart data center deals, and keep your rates climbing.
+      </p>
+      <p>
+        They've already planted signs across District 6. Major roads. Busy corners.
+        Anywhere voters will see them. They're betting that if their signs are the only
+        ones out there, <strong>voters will assume nobody's fighting back.</strong>
+      </p>
+    </div>
+
+    <div class="callout rv rv-d3">
+      For every TPUSA sign on a corner, we place ours right beside it.
+      <strong>Side by side, voters see both sides.</strong> That's how you neutralize dark money —
+      you show up next to it.
+    </div>
+
+    <div class="context-body rv rv-d4">
+      <p>
+        We're three neighbors running for SRP board — no PAC money, no corporate donors. Every dollar comes from
+        neighbors like you. <strong>$50 places a counter-sign. $250 covers a whole corridor.</strong>
+        That's how we fight back.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ IMPACT TIERS ══ -->
+<section class="impact" id="donate">
+  <div class="impact-inner">
+    <div class="marker marker--light rv">
+      <span class="marker-line"></span> Your Impact
+    </div>
+    <h2 class="rv rv-d1">Answer <br>every sign.</h2>
+    <p class="impact-subtitle rv rv-d2">
+      Choose what fits your budget. Every dollar goes directly to printing and placing counter-signs beside TPUSA's across District 6.
+    </p>
+
+    <div class="tiers rv rv-d3">
+      <div class="tier">
+        <div class="tier-label">Counter</div>
+        <div class="tier-amount">$50</div>
+        <div class="tier-desc"><strong>1 counter-sign</strong> planted right next to a TPUSA sign at a busy intersection.</div>
+        <div class="tier-detail">Most popular</div>
+      </div>
+      <div class="tier tier--featured">
+        <div class="tier-label">Corridor</div>
+        <div class="tier-amount">$250</div>
+        <div class="tier-desc"><strong>5 counter-signs</strong> — enough to answer every TPUSA sign on a major road.</div>
+        <div class="tier-detail">Best value</div>
+      </div>
+      <div class="tier">
+        <div class="tier-label">District Sweep</div>
+        <div class="tier-amount">$500</div>
+        <div class="tier-desc"><strong>10 counter-signs</strong> covering intersections where 70,000+ vehicles pass daily. Total district saturation.</div>
+        <div class="tier-detail">Maximum impact</div>
+      </div>
+    </div>
+
+    <div class="traffic-stat rv rv-d4">
+      <div class="traffic-stat-num">70K–170K</div>
+      <div class="traffic-stat-text">vehicles per day pass through District 6's busiest corridors. That's where TPUSA is placing signs — and that's where we'll answer them.</div>
+    </div>
+
+    <div class="progress-wrap rv rv-d4">
+      <givebutter-widget id="LPv6lp"></givebutter-widget>
+    </div>
+
+    <div class="impact-cta rv rv-d4">
+      <a href="https://givebutter.com/signs-against-tpusa-d8ej8j" class="btn btn--fight" target="_blank" rel="noopener">Donate Now</a>
+      <span class="impact-note">
+        100% of donations go to printing and placing counter-signs.
+        Contributions are not tax-deductible.
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COUNTDOWN ══ -->
+<section class="urgency">
+  <div class="urgency-inner rv">
+    <div class="countdown-label">Time Until Election Day</div>
+    <div class="countdown" id="countdown">
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cd-days">--</div>
+        <div class="countdown-text">Days</div>
+      </div>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cd-hours">--</div>
+        <div class="countdown-text">Hours</div>
+      </div>
+      <div class="countdown-unit">
+        <div class="countdown-num" id="cd-mins">--</div>
+        <div class="countdown-text">Min</div>
+      </div>
+    </div>
+    <p>
+      <strong>Early voting starts March 11th.</strong> Counter-signs need to be printed and in the
+      ground before ballots hit mailboxes. Every day without a sign is a day they go unanswered.
+    </p>
+    <a href="https://givebutter.com/signs-against-tpusa-d8ej8j" class="btn btn--fight" target="_blank" rel="noopener">Fund Counter-Signs Now</a>
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ══ -->
+<section class="how">
+  <div class="how-inner">
+    <div class="marker marker--blue rv">
+      <span class="marker-line"></span> How It Works
+    </div>
+    <h2 class="rv rv-d1">From your dollar <br>to their corner.</h2>
+
+    <div class="steps">
+      <div class="step rv rv-d2">
+        <div class="step-num">01</div>
+        <div>
+          <h3>You donate</h3>
+          <p>Pick any amount. $50 covers one counter-sign. $250 covers a full corridor.</p>
+        </div>
+      </div>
+      <div class="step rv rv-d3">
+        <div class="step-num">02</div>
+        <div>
+          <h3>We print locally</h3>
+          <p>Signs are printed right here in the Valley by a local shop. Double-sided, corrugated, built to last through Arizona sun until April 7th.</p>
+        </div>
+      </div>
+      <div class="step rv rv-d4">
+        <div class="step-num">03</div>
+        <div>
+          <h3>We place them beside TPUSA's</h3>
+          <p>Our volunteers map every Turning Point sign in District 6 and plant ours on the same corner. Drivers stopped at a red light see both signs — and both sides of the story.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="report-cta rv rv-d5">
+      <p class="report-text">Spotted a TPUSA sign?</p>
+      <a href="/signs/map/" class="btn btn--fight">Report It on the Map</a>
+      <span class="report-note">Drop a pin so our team knows where to plant a counter-sign.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FINAL CTA ══ -->
+<section class="final">
+  <div class="final-inner rv">
+    <div class="marker marker--light">
+      <span class="marker-line"></span> Fund the Fight
+    </div>
+    <h2>Every TPUSA sign gets an answer.</h2>
+    <p>
+      <span id="final-days">58</span> days until Election Day. Every TPUSA sign already has a spot
+      picked out for ours. We just need to print them. Fund a counter-sign today — and make sure
+      no corner in District 6 tells only one side of the story.
+    </p>
+    <div class="final-actions">
+      <a href="https://givebutter.com/signs-against-tpusa-d8ej8j" class="btn btn--white" target="_blank" rel="noopener">Donate Now</a>
+      <button class="btn btn--ghost-light" id="share-btn" type="button">Can't donate? Share this page</button>
+    </div>
+  </div>
+</section>
+
+<!-- Floating action buttons -->
+<div class="fab-group" id="fab-group">
+  <a href="https://givebutter.com/signs-against-tpusa-d8ej8j" class="fab fab--donate" target="_blank" rel="noopener"><span class="fab-icon">&#9889;</span> Fund Counter-Signs</a>
+  <a href="/signs/map/" class="fab fab--report"><span class="fab-icon">&#128205;</span> Report a Sign</a>
+  <a href="/signs/sponsor/" class="fab fab--report"><span class="fab-icon">&#9999;&#65039;</span> Sponsor a Sign</a>
+  <a href="/signs/poll/" class="fab fab--report"><span class="fab-icon">&#9997;</span> Vote on Designs</a>
+</div>
+
+<!-- Share toast -->
+<div class="share-toast" id="share-toast">Link copied — send it to a neighbor</div>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">NOTOURWATER.ORG</div>
+    <p>
+      Paid for by the Energy Freedom Team<br>
+      John Travise & Sara Travise<br>
+      SRP District 6
+    </p>
+    <p>
+      <a href="/">Home</a> ·
+      <a href="/check">Check Registration</a> ·
+      <a href="/signs/map/">Sign Map</a> ·
+      <a href="/signs/sponsor/">Sponsor a Sign</a> ·
+      <a href="/signs/poll/">Vote on Designs</a> ·
+      <a href="https://energyfreedom.team">Contact</a>
+    </p>
+  </div>
+</footer>
+
+<!-- PostHog -->
+<script>
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId setPersonProperties".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  posthog.init('phc_B6KxW3gqUjgK4OmAf1wjUUyijREMbQo597M6jRqByRb', {api_host: 'https://us.i.posthog.com', person_profiles: 'identified_only'});
+</script>
+<script>
+  // ── Countdown to April 7, 2026 with digit animation ──
+  (function countdown() {
+    const target = new Date('2026-04-07T06:00:00-07:00');
+    const els = {
+      days: document.getElementById('cd-days'),
+      hours: document.getElementById('cd-hours'),
+      mins: document.getElementById('cd-mins')
+    };
+    const prev = { days: null, hours: null, mins: null };
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function animateDigit(el, newVal) {
+      if (prefersReduced) { el.textContent = newVal; return; }
+      const oldSpan = document.createElement('span');
+      oldSpan.textContent = el.textContent;
+      oldSpan.className = 'digit-out';
+      oldSpan.style.position = 'absolute';
+      oldSpan.style.inset = '0';
+      const newSpan = document.createElement('span');
+      newSpan.textContent = newVal;
+      newSpan.className = 'digit-in';
+      el.style.position = 'relative';
+      el.textContent = '';
+      el.appendChild(oldSpan);
+      el.appendChild(newSpan);
+      setTimeout(() => {
+        el.textContent = newVal;
+      }, 500);
+    }
+
+    function update() {
+      const diff = target - new Date();
+      if (diff <= 0) {
+        els.days.textContent = '0';
+        els.hours.textContent = '0';
+        els.mins.textContent = '0';
+        return;
+      }
+      const days = Math.floor(diff / 86400000);
+      const hours = Math.floor((diff % 86400000) / 3600000);
+      const mins = Math.floor((diff % 3600000) / 60000);
+
+      if (prev.days !== null && prev.days !== days) animateDigit(els.days, days);
+      else els.days.textContent = days;
+      if (prev.hours !== null && prev.hours !== hours) animateDigit(els.hours, hours);
+      else els.hours.textContent = hours;
+      if (prev.mins !== null && prev.mins !== mins) animateDigit(els.mins, mins);
+      else els.mins.textContent = mins;
+
+      prev.days = days;
+      prev.hours = hours;
+      prev.mins = mins;
+    }
+    update();
+    setInterval(update, 60000);
+  })();
+
+  // ── Scroll progress bar ──
+  (function scrollProgress() {
+    const bar = document.getElementById('scroll-progress');
+    if (!bar) return;
+    let ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          const h = document.documentElement.scrollHeight - window.innerHeight;
+          bar.style.width = h > 0 ? ((window.scrollY / h) * 100) + '%' : '0%';
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
+
+  // ── Hero parallax glow — follows mouse subtly ──
+  (function heroParallax() {
+    const glow = document.querySelector('.hero-glow');
+    const hero = document.querySelector('.hero');
+    if (!glow || !hero) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.innerWidth < 768) return; // skip on mobile
+
+    hero.addEventListener('mousemove', function(e) {
+      const rect = hero.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      // Map 0-1 to offset range
+      const offsetX = (x - 0.5) * 80;
+      const offsetY = (y - 0.5) * 60;
+      glow.style.transition = 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+      glow.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px)';
+    });
+
+    hero.addEventListener('mouseleave', function() {
+      glow.style.transform = 'translate(0, 0)';
+    });
+  })();
+
+  // ── Scroll reveal ──
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('vis');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('.rv').forEach(el => revealObs.observe(el));
+
+  // ── Sync final CTA day count with countdown ──
+  (function syncFinalDays() {
+    var target = new Date('2026-04-07T06:00:00-07:00');
+    var diff = target - new Date();
+    var days = Math.max(0, Math.floor(diff / 86400000));
+    var el = document.getElementById('final-days');
+    if (el) el.textContent = days;
+  })();
+
+  // ── FAB visibility — hide when hero CTA is on screen ──
+  (function fabVisibility() {
+    var fabGroup = document.getElementById('fab-group');
+    var heroCta = document.querySelector('.hero-cta');
+    if (!fabGroup || !heroCta) return;
+    var obs = new IntersectionObserver(function(entries) {
+      fabGroup.classList.toggle('fab-hidden', entries[0].isIntersecting);
+    }, { threshold: 0.1 });
+    obs.observe(heroCta);
+  })();
+
+  // ── Share button ──
+  (function shareBtn() {
+    var btn = document.getElementById('share-btn');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      var url = 'https://www.notourwater.org/signs/';
+      var text = 'Turning Point USA is blanketing SRP District 6 with dark money signs. Help fund counter-signs right beside every one of theirs.';
+      if (navigator.share) {
+        navigator.share({ title: 'Fund Counter-Signs', text: text, url: url });
+      } else {
+        navigator.clipboard.writeText(url).then(function() {
+          var toast = document.getElementById('share-toast');
+          if (toast) {
+            toast.classList.add('show');
+            setTimeout(function() { toast.classList.remove('show'); }, 2500);
+          }
+        });
+      }
+    });
+  })();
+</script>
+</body>
+</html>
